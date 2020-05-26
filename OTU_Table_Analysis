@@ -1,0 +1,1710 @@
+---
+title: "The microbiome of the endosymbiotic dinoflagellate, Symbiodiniaceae, in corals exposed to thermal stress"
+author: "SG Gardner"
+date: "26 May 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(speedyseq)# replaced phyloseq
+library(ggplot2)
+library(vegan)
+library(permute)
+library(lattice)
+library(plyr)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(genefilter)
+library(microbiome)
+library(tidyverse)
+library(scales)
+library(tidyheatmap)
+library(wesanderson)
+library(Biostrings)
+library(ggsci)
+library(rstatix)
+library(ggpubr)
+```
+
+# Data import - make a tidy phyloseq object
+
+```{r}
+# Reference sequences
+seqs <- readDNAStringSet("rep_set.fna")
+
+DNAStringsSet_to_df <- function(DNAStringSet){
+  seq_df <- data.frame(names = names(DNAStringSet),
+                       seqs = paste(DNAStringSet))
+  return(seq_df)
+}
+
+seq_df <- DNAStringsSet_to_df(seqs) %>%
+  mutate(names = sapply(str_split(names, "\\s+"), "[", 1))
+
+data <- read.table("otu_table_zoox+coral_Rerun2.txt", sep = "\t", header = TRUE, skip = 1)
+
+data_seqs <- left_join(data, seq_df, by = c("OTU.ID" = "names")) %>% # below to filter out the sequences missing from the FASTA file (478) sum(is.na(data_seqs$seqs))
+  filter(is.na(seqs))
+
+# Load in feature table which is an OTU/Taxonomy table in one tsv file
+data <- read.table("otu_table_zoox+coral_Rerun2.txt", sep = "\t", header = TRUE, skip = 1)  %>%
+  filter(!(OTU.ID %in% data_seqs$OTU.ID)) #filters out the OTUs from data_seqs that had NA
+
+# Rename frament ID (OTU.ID) to something more legible
+data <- data %>% dplyr::mutate(OTU.ID = row_number()) # Use mutate to add an index to each row
+data$OTU.ID <- paste0("OTU_", data$OTU.ID) # Paste "OTU_" in front of each number generated in the above line
+
+# Create OTU table
+otutab <- data %>%
+  select(-taxonomy) # remove the columns we dont need in the otu_table
+rownames(otutab) <- otutab$OTU.ID
+otutab <- otutab %>% select(-OTU.ID)
+otutab <- otu_table(otutab, taxa_are_rows = TRUE) # create otu_table to go into phyloseq object
+
+# Create taxtable
+taxtab <- data.frame(taxonomy = data$taxonomy)
+taxtab <- taxtab %>%
+  separate(taxonomy, into = c("kingdom","phylum","class","order","family","genus","species"), sep = ";", remove = TRUE) %>%
+    apply(2, function(x) gsub("^$|^ $", NA, x)) %>% # replace any empty cells with NA
+  replace_na("Unassigned") # replace any cell with NA with "Unassigned"
+
+taxtab <- tax_table(as.matrix(taxtab)) # Make the tax_table
+rownames(taxtab) <- rownames(otutab) # Ensure rownames in taxtab match rownames of otutab
+#View(taxtab)
+
+# Load in the sample metadata file
+sampledata <- read.table("sample_metadata2.txt", header = TRUE,sep = "\t")
+sampledata$SampleID <- paste0(sampledata$SampleID) # to make rownames match column names in tax_table and otu_table
+rownames(sampledata) <- sampledata$SampleID # rownames to match column names as above
+sampledata <- sample_data(sampledata) # make sample data
+
+
+# Make the phyloseq object
+ps <- phyloseq(sample_data(sampledata), otu_table(otutab, taxa_are_rows = TRUE), tax_table(taxtab))
+
+# Import tree and merge
+# tree <- read_tree("fastree_result.tre")
+# ps <- merge_phyloseq(ps, tree)
+# ps.tree <- ps
+
+# # Data cleanup - remove Chloroplast and Mitochondria from dataset (phyloseq object)
+ps <- subset_taxa(ps, order != "Chloroplast") # CHECKED AND NONE IN TAXTABLE FILE
+ps <- subset_taxa(ps, family != "Mitochondria")
+ps <- subset_taxa(ps, kingdom != "Unassigned")
+ps <- subset_taxa(ps, phylum != "Unassigned")
+ps <- subset_taxa(ps, kingdom != "Eukaryota")
+ps <- subset_taxa(ps, kingdom != "Archaea")
+
+# prune OTUs that are not present in any of the samples
+ps <- prune_taxa(taxa_sums(ps) > 1, ps) # Remove any singletons that have been created due to subsetting
+
+ps.zoox <- subset_samples(ps, Treatment != "Aspera") # Removing coral (aspera) samples
+ps.zoox <- prune_taxa(taxa_sums(ps.zoox) > 1, ps.zoox)
+
+ps.aspera <- subset_samples(ps, Treatment == "Aspera") # keeping only Aspera
+ps.aspera <- prune_taxa(taxa_sums(ps.aspera) > 1, ps.aspera)
+
+ps.coral.zoox <- ps # Phyloseq file with coral and zoox data
+ps.coral.zoox <- prune_taxa(taxa_sums(ps.coral.zoox) > 1, ps.coral.zoox)
+```
+
+# Relative abundance taxonomy bar plots 
+## Coral + Zoox
+
+```{r}
+# Bar plot for relative abundance of anything with mean >1% at family level
+ps.coral.zoox.fam <- tax_glom(ps.coral.zoox, taxrank = "order")
+
+ps.transformedf <- transform_sample_counts(ps.coral.zoox.fam, function(x) x/sum(x)*100) # transforms ps count to relative abundnce data
+
+# Turns transformed data into long format for using ggplot
+melt <- psmelt(ps.transformedf) 
+
+# Use this code for plotting bar chart in ggplot instead of using plot_bar (phyloseq)
+ggplot(data = melt, aes(x = Replicate, y = Abundance)) +
+      geom_bar(stat = "identity", aes(fill = order), colour = "black", position = "fill") +
+  facet_grid(~Treatment) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_continuous(labels = c(1, 2, 3, 4, 5, 6), breaks = c(1, 2, 3, 4, 5, 6)) +
+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), aspect.ratio = 1) +
+  theme(aspect.ratio = 1, legend.position = "right") +
+      ylab("Relative abundance (%)") +
+      guides(fill = guide_legend(ncol = 2))
+```
+
+## Coral only
+
+```{r}
+# Bar plot for relative abundance of anything with mean >1% at family level
+ps.fam <- tax_glom(ps.aspera, taxrank = "family")
+ps.transformedf <- transform_sample_counts(ps.fam, function(x) x/sum(x)*100)
+
+# Turns transformed data into long format for using ggplot
+melt <- psmelt(ps.transformedf) 
+
+# Use this code for plotting bar chart in ggplot instead of using plot_bar (phyloseq)
+ggplot(data = melt, aes(x = Replicate, y = Abundance)) +
+      geom_bar(stat = "identity", aes(fill = family), colour = "black", position = "fill") +
+  facet_grid(~Day) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_continuous(labels = c(1, 2, 3, 4, 5, 6), breaks = c(1, 2, 3, 4, 5, 6)) +
+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), aspect.ratio = 1) +
+  theme(aspect.ratio = 1, legend.position = "right") +
+      ylab("Relative abundance (%)") +
+      guides(fill = guide_legend(ncol = 2))
+```
+
+# PCoA 
+## All treatments 
+Plot ordination - weighted unifrac
+```{r}
+trans <- microbiome::transform(ps.zoox, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+plotbray <- ordinate(trans, method = "PCoA", distance = "unifrac", weighted = TRUE) ## RUN USING PHY TREE
+PCoA_unifw <- plot_ordination(trans, plotbray, shape = "Treatment", color = "Treatment") +
+  geom_point(size = 4, aes(alpha = 0.5)) +
+  geom_encircle(aes(fill = Treatment), s_shape = 1, expand = 0, alpha = 0.2, show.legend = FALSE) +
+  scale_shape_manual(values = c(15, 16, 17, 18, 19)) +
+  theme(aspect.ratio = 1)
+
+# p + stat_ellipse(geom = "polygon", type = "norm", alpha = 0.05, linetype = 2, aes(fill = NULL)) +
+#  theme_bw()
+
+# Tidy up the colours
+PCoA_unifw$layers <- PCoA_unifw$layers[-1]
+
+# gg_color_hue <- function(n){
+#     hues = seq(15, 450, length = n+1)
+#     hcl(h = hues, l = 65, c = 100)[1:n]
+# }
+# 
+# color.names <- levels(p$data$Treatment)
+# pcols <- gg_color_hue(length(color.names))
+# names(pcols) <- color.names
+# pcols["Samples"] <- "black"
+PCoA_unifw + scale_color_manual(breaks = c("Control", "Protective", "Repetitive", "Single"), 
+                       values = c("black", "blue2", "green4", "red"))
+
+# Unweighted unifrac plot
+trans <- microbiome::transform(ps.zoox, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+plotbray <- ordinate(trans, method = "PCoA", distance = "unifrac", weighted = FALSE)
+PCoA_unif <- plot_ordination(trans, plotbray, shape = "Treatment", color = "Treatment") +
+  geom_point(size = 4, aes(alpha = 0.5)) +
+  geom_encircle(aes(fill = Treatment), s_shape = 1, expand = 0, alpha = 0.2, show.legend = FALSE) +
+  scale_shape_manual(values = c(15, 16, 17, 18, 19)) +
+  theme(aspect.ratio = 1)
+
+PCoA_unif$layers <- PCoA_unif$layers[-1]
+
+PCoA_unif + scale_color_manual(breaks = c("Control", "Protective", "Repetitive", "Single"), 
+                       values = c("black", "blue2", "green4", "red"))
+```
+
+## Core 100% OTU level
+
+```{r}
+trans.f <- transform_sample_counts(ps.zoox, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0)) # If a 0 count for that OTU occurs in any of the k (number of samples) then it is filtered out i.e it has to have a value above 0 in all samples to be considered core
+a <- filter_taxa(trans.f, flist)
+all_core <- prune_taxa(a, trans.f)
+all_core.melt <- psmelt(all_core) %>%
+  group_by(Treatment, OTU, kingdom, phylum, class, order, family, genus, species) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+#write.csv(all_core.melt, file = "all_core100_OTU.csv")
+
+trans <- microbiome::transform(all_core, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+plotbray <- ordinate(trans, method = "PCoA", distance = "unifrac", weighted = TRUE)
+PCoA_core <- plot_ordination(trans, plotbray, shape = "Treatment", color = "Treatment") +
+  geom_point(size = 4, aes(alpha = 0.5)) +
+  geom_encircle(aes(fill = Treatment), s_shape = 1, expand = 0, alpha = 0.2, show.legend = FALSE) +
+  scale_shape_manual(values = c(15, 16, 17, 18, 19)) +
+  theme(aspect.ratio = 1)
+
+PCoA_core$layers <- PCoA_core$layers[-1]
+
+PCoA_core + scale_color_manual(breaks = c("Control", "Protective", "Repetitive", "Single"), 
+                       values = c("black", "blue2", "green4", "red"))
+
+# Joins figures
+library(gridExtra)
+joined <- grid.arrange(PCoA_unif, PCoA_unifw, PCoA_core, ncol = 2)
+as_ggplot(joined)
+```
+
+
+# Alpha diversity - QIIME 
+## Zoox
+```{r}
+#  Load in the alpha diversity outputs
+Chao1 <- read.table("chao1zoox.rerun.txt", header = TRUE, sep = "\t")
+Observed <- read.table("observed_specieszoox.rerun.txt", header = TRUE, sep = "\t")
+PD <- read.table("PD_whole_treezoox.rerun.txt", header = TRUE, sep = "\t")
+
+meta <- data.frame(SampleID = sample_data(ps.zoox)$SampleID, 
+                   Treatment = sample_data(ps.zoox)$Treatment)
+
+# Gather the data into long format and mutate to add index column
+Chao1_long <- gather(Chao1, SampleID, measure) %>%
+  mutate(index = "Species_Richness")
+Chao1_long <- left_join(Chao1_long, meta)
+#write.csv(Chao1_long, file = "Chao1_summary.csv")
+
+Obs_long <- gather(Observed, SampleID, measure) %>%
+  mutate(index = "Observed_OTUs")
+Obs_long <- left_join(Obs_long, meta)
+#write.csv(Obs_long, file = "ObsOTU_summary.csv")
+
+PD_long <- gather(PD, SampleID, measure) %>%
+  mutate(index = "Phylogenetic_Diversity")
+PD_long <- left_join(PD_long, meta)
+#write.csv(PD_long, file = "phylogenetic diversity_summary.csv")
+
+# Row bind the three tables together
+alpha <- rbind(Chao1_long, Obs_long, PD_long)
+
+#write.csv(alpha, file = "alpha_div_summary.csv")
+```
+
+### Plot - boxplots Fig 2a
+```{r}
+library(ggplot2)
+theme_set(theme_bw())
+
+alpha %>%
+  dplyr::mutate(Treatment = factor(Treatment, levels = c("Control", "Protective", "Repetitive", "Single"))) %>%
+  ggplot(aes(x = Treatment, y = measure)) +
+  facet_wrap(~index, ncol = 3, scales = "free") +
+  geom_boxplot(outlier.size = 0.5) +
+  theme(aspect.ratio = 1, 
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()
+        ) +
+  ylab("Alpha diversity (n = 6)") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
+
+### Run stats
+```{r}
+library(car)
+library(dunn.test)
+library(FSA)
+
+# For Chao
+Chao.anova <- aov(measure ~ Treatment, data = Chao1_long)
+#plot(Chao.anova)
+summary(Chao.anova)
+
+TukeyHSD(Chao.anova, conf.level = 0.95)
+#plot(TukeyHSD(Chao.anova, conf.level = 0.95))
+
+# Check assumption of normality using Shapiro-Wilk test
+Chao.anova.residuals <- residuals(object = Chao.anova)
+shapiro.test(x = Chao.anova.residuals)
+
+# Check homogeneity of variances using Levenes
+#leveneTest(measure ~ Treatment, data = Chao.anova)
+#leveneTest(Chao.anova, center = mean)
+leveneTest(Chao.anova) # This is Brown-Forsythe test
+
+# If no homogeneity of variance across our factor levels
+oneway.test(measure ~ Treatment, Chao1_long) # Default is equal variances (i.e. homogeneity of variance) not assumed
+
+# Not normal, but equal variances:
+# Non-parametric alternative to ANOVA: Kruskal-Wallis + Dunn's - test the hypothesis that all the group medians are equal
+kruskal.test(measure ~ Treatment, Chao1_long)
+# Multiple comparisons Post-Hoc test: 
+dunn.test(Chao1_long$measure, Chao1_long$Treatment, method = "bonferroni")
+# Check homogeneity of variances
+bartlett.test(measure ~ Treatment, Chao1_long) # UNEQUAL VARIANCES so CANNOT run Kruskal
+
+# Chao data was square-root trasformed and rerun again from aov with new Chao1_long file (as below)
+Chao1.t <- sqrt(Chao1)
+Chao1_long <- gather(Chao1.t, SampleID, measure) %>%
+  mutate(index = "Species_Richness")
+Chao1_long <- left_join(Chao1_long, meta)
+
+kruskal.test(measure ~ Treatment, Obs_long)
+dunn.test(Obs_long$measure, Obs_long$Treatment, method = "bonferroni")
+
+# Phylogenetic diversity
+PD.anova <- aov(measure ~ Treatment, data = PD_long)
+summary(PD.anova)
+TukeyHSD(PD.anova, conf.level = 0.95)
+PD.anova.residuals <- residuals(object = PD.anova)
+shapiro.test(x = PD.anova.residuals)
+leveneTest(PD.anova)
+
+# # Needs transformation
+# PD.t <- sqrt(PD)
+# PD_long <- gather(PD.t, SampleID, measure) %>%
+#   mutate(index = "Observed_OTUs")
+# PD_long <- left_join(PD_long, meta)
+
+# not normal try non-parametric Kruskal
+kruskal.test(measure ~ Treatment, PD_long)
+dunn.test(PD_long$measure, PD_long$Treatment, method = "bonferroni")
+
+```
+
+## Aspera
+```{r}
+#  Load in the alpha diversity outputs
+Chao1 <- read.table("chao1aspera.rerun.txt", header = TRUE, sep = "\t")
+Observed <- read.table("observed_speciesaspera.rerun.txt", header = TRUE, sep = "\t")
+PD <- read.table("PD_whole_treeaspera.rerun.txt", header = TRUE, sep = "\t")
+
+# Summary data
+# library(pastecs)
+# Chao.summary <- stat.desc(Chao1, basic = TRUE, desc = TRUE, norm = FALSE, p = 0.95)
+
+meta <- data.frame(SampleID = sample_data(ps.coral.zoox)$SampleID, 
+                   Day = sample_data(ps.coral.zoox)$Day)
+
+# Gather the data into long format and mutate to add index column
+Chao1_long <- gather(Chao1, SampleID, measure) %>%
+  mutate(index = "Species_Richness")
+Chao1_long <- left_join(Chao1_long, meta)
+#write.csv(Chao1_long, file = "Chao1_aspera_summary.csv")
+
+Obs_long <- gather(Observed, SampleID, measure) %>%
+  mutate(index = "Observed_OTUs")
+Obs_long <- left_join(Obs_long, meta)
+#write.csv(Obs_long, file = "ObsOTU_aspera_summary.csv")
+
+PD_long <- gather(PD, SampleID, measure) %>%
+  mutate(index = "Phylogenetic_Diversity")
+PD_long <- left_join(PD_long, meta)
+#write.csv(PD_long, file = "PD_aspera_summary.csv")
+
+# Row bind the three tables together
+alpha <- rbind(Chao1_long, Obs_long, PD_long)
+```
+### Plot - boxplots
+```{r}
+library(ggplot2)
+theme_set(theme_bw())
+
+alpha %>%
+  dplyr::mutate(Day = factor(Day, levels = c("1", "4", "9", "14"))) %>%
+  ggplot(aes(x = Day, y = measure)) +
+  facet_wrap(~index, ncol = 3, scales = "free") +
+  geom_boxplot(outlier.size = 0.5) +
+  theme(aspect.ratio = 1, 
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()
+        ) +
+  ylab("Alpha diversity (n = 6)")
+```
+
+### Run stats
+
+```{r}
+# Non-parametric alternative to ANOVA: Kruskal-Wallis + Dunn's - test the hypothesis that all the group medians are equal
+kruskal.test(measure ~ Day, Chao1_long)
+# Multiple comparisons Post-Hoc test: 
+dunn.test(Chao1_long$measure, Chao1_long$Day, method = "bonferroni")
+
+# Observed OTUs
+kruskal.test(measure ~ Day, Obs_long)
+dunn.test(Obs_long$measure, Obs_long$Day, method = "bonferroni")
+
+# Phylogenetic diversity
+kruskal.test(measure ~ Day, PD_long)
+dunn.test(PD_long$measure, PD_long$Day, method = "bonferroni")
+```
+
+
+# X Alpha diversity - computation
+(not importing QIIME files)
+RAREFIED (to smallest at the moment, 5620 using ps.zoox)
+
+https://joey711.github.io/phyloseq/plot_richness-examples.html
+```{r}
+# library(ggplot2)
+smallest <- min(sample_sums(ps.zoox)) # get minimum seq depth across all samples
+r <- rarefy_even_depth(ps.zoox, sample.size = smallest, verbose = FALSE, replace = TRUE) # rarify to 5620
+
+# prune OTUs that are not present in any of the samples, using rarefied data
+ps.pruned <- prune_taxa(taxa_sums(r) > 0, r) # left with 1273 OTUs
+
+# Reorder the x axis?
+plot_richness(ps.pruned, x = "Treatment", measures=c("Observed", "Chao1", "Shannon", "Simpson")) +
+  geom_boxplot(outlier.size = 0.2) +
+  theme(aspect.ratio = 2, 
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()
+        ) +
+  ylab("Alpha diversity (n = 6)") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+# rich <- estimate_richness(ps.pruned, split = TRUE, measures = NULL)
+# write.csv(rich, file = "Alpha_Diversity.csv")
+```
+
+### X Run stats
+
+```{r}
+library(car)
+
+# Stats for Observed
+results.obs = estimate_richness(ps.pruned, measures = 'Observed')
+
+results.obs <- results.obs %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- data.frame(SampleID = sample_data(ps.pruned)$SampleID, 
+                   Treatment = sample_data(ps.pruned)$Treatment)
+
+results.obs <- left_join(results.obs, meta)
+
+res.obs.aov <- aov(Observed ~ Treatment, data = results.obs)
+
+summary(res.obs.aov)
+
+TukeyHSD(res.obs.aov)
+
+# Check homogeneity of variances using Levenes # IF SIGNIFICANT - TRANSFORM  after initial estimate_richness using results.shan.t <- log(results.shan) and rerun
+leveneTest(Observed ~ Treatment, data = results.obs)
+
+
+# Stats for Chao1
+results.chao = estimate_richness(ps.pruned, measures = 'Chao1')
+
+results.chao <- results.chao %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- data.frame(SampleID = sample_data(ps.pruned)$SampleID, 
+                   Treatment = sample_data(ps.pruned)$Treatment)
+
+results.chao <- left_join(results.chao, meta)
+
+results.chao.aov <- aov(Chao1 ~ Treatment, data = results.chao)
+
+summary(results.chao.aov)
+
+TukeyHSD(results.chao.aov)
+
+# Check homogeneity of variances using Levenes
+leveneTest(Chao1 ~ Treatment, data = results.chao)
+
+
+# Stats for Simpson
+results.simp = estimate_richness(ps.pruned, measures = 'Simpson')
+
+results.simp <- results.simp %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- data.frame(SampleID = sample_data(ps.pruned)$SampleID, 
+                   Treatment = sample_data(ps.pruned)$Treatment)
+
+results.simp <- left_join(results.simp, meta)
+
+results.simp.aov <- aov(Simpson ~ Treatment, data = results.simp)
+
+summary(results.simp.aov)
+
+TukeyHSD(results.simp.aov)
+
+# Check homogeneity of variances using Levenes
+leveneTest(Simpson~ Treatment, data = results.simp)
+
+
+# Stats for Shannon
+results.shan = estimate_richness(ps.pruned, measures = 'Shannon')
+
+results.shan <- results.shan %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- data.frame(SampleID = sample_data(ps.pruned)$SampleID, 
+                   Treatment = sample_data(ps.pruned)$Treatment)
+
+results.shan <- left_join(results.shan, meta)
+
+results.shan.aov <- aov(Shannon ~ Treatment, data = results.shan)
+
+summary(results.shan.aov)
+
+TukeyHSD(results.shan.aov)
+
+# Check homogeneity of variances using Levenes
+leveneTest(Shannon ~ Treatment, data = results.shan) 
+
+
+# # Check normality
+# plot(res.obs.aov, 1) # Three outliers detected. These are the circles with values beside them
+# plot(res.obs.aov, 2) # Not too far from normal
+# aov_residuals <- residuals(object = res.obs.aov)
+# # Check using Shapiros
+# shapiro.test(x = aov_residuals) # assumption of normality is satisfied under shapiros (JUST!!!)
+```
+
+## X Summary Table - missing phylogenetic diversity
+https://github.com/kassambara/rstatix
+```{r}
+library(rstatix)  
+library(ggpubr)
+
+Obs.summary <- results.obs %>%
+                    group_by(Treatment) %>% 
+                    get_summary_stats(Observed, type = "common")
+
+Chao.summary <- results.chao %>%
+                    group_by(Treatment) %>% 
+                    get_summary_stats(Chao1, type = "common")
+
+Simp.summary <- results.simp %>%
+                    group_by(Treatment) %>% 
+                    get_summary_stats(Simpson, type = "common")
+
+Shan.summary <- results.shan %>%
+                    group_by(Treatment) %>% 
+                    get_summary_stats(Shannon, type = "common")
+
+summary.table <- rbind(Obs.summary, Chao.summary, Simp.summary, Shan.summary)
+#write.csv(x = summary.table, file = "Alpha.summary.table")
+
+anova.obs <- results.obs %>% 
+  anova_test(Observed ~ Treatment)
+
+anova.chao <- results.chao.t %>% 
+  anova_test(Chao1 ~ Treatment)
+
+anova.simp <- results.simp %>% 
+  anova_test(Simpson ~ Treatment)
+
+anova.shan <- results.shan.t %>% 
+  anova_test(Shannon ~ Treatment)
+
+# T-test
+stat.test <- results.chao.t %>% 
+  t_test(Chao1 ~ Treatment, paired = FALSE) 
+stat.test
+
+```
+
+
+
+
+
+# Beta diversity
+## ADONIS (vegan) Zoox only
+instead of ANOSIM
+
+```{r echo=TRUE, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+trans.adonis <- microbiome::transform(ps.tree.zoox, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+
+bray <- phyloseq::distance(trans.adonis, method = "wunifrac") # Change to wunifrac once phy-tree added
+sampledf <- data.frame(sample_data(trans.adonis))
+adonis(formula = bray ~ Treatment, data = sampledf, permutations = 9999)
+
+beta <- betadisper(bray, sampledf$Treatment)
+boxplot(beta)
+anova(beta)
+
+## Tukey's Honest Significant Differences # A Tukey's test can be done to see if and which groups differ in relation to their variances (in our case, groups are not different):
+TukeyHSD(beta)
+beta.HSD <- TukeyHSD(beta)
+plot(beta.HSD)
+
+## Now that we know that groups have homogenous variances, we can test if compositions are different (remember that groups have very different species when we saw the downloaded data). Before performing adonis we might want to see our first two PCoA axes to see how our data fits there
+plot(beta)
+
+# with data ellipses instead of hulls
+# plot(beta, ellipse = TRUE, hull = FALSE) # 1 sd data ellipse
+# plot(beta, ellipse = TRUE, hull = FALSE, conf = 0.90) # 90% data ellipse
+
+# Group dispersions (distances from centroids) are similar, and compositions seem to be very different (for Seq factor). Let's go to adonis to test that.
+
+# ***  What is this telling us?!
+permutest(beta, pairwise = TRUE, permutations = 9999)
+# The was no difference between Treatment
+```
+
+## ADONIS (vegan) Coral + Zoox
+instead of ANOSIM
+
+```{r echo=TRUE, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+# If homogeneity of variances assumption is met (betadisper, then can do ADONIS)
+# Adonis analyzes and partitions sums of squares using distance matrices. It can be seen as an ANOVA using distance matrices to test if two or more groups have similar compositions
+trans.adonis <- microbiome::transform(ps.coral.zoox, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+
+bray <- phyloseq::distance(trans.adonis, method = "wunifrac") # Change to wunifrac once phy-tree added
+sampledf <- data.frame(sample_data(trans.adonis))
+adonis(formula = bray ~ Treatment, data = sampledf, permutations = 9999) # Treatments have a SIG different compositions (p<0.05)
+
+# Test for homogenity of variance around centroids. If p value > 0.05 (anova), the assumption is met. Then, an ANOVA is done to test if the dispersions (variances) of groups are different.
+beta <- betadisper(bray, sampledf$Treatment)
+plot(beta)
+boxplot(beta)
+anova(beta) # Significant
+
+## Tukey's Honest Significant Differences
+TukeyHSD(beta)
+beta.HSD <- TukeyHSD(beta)
+plot(beta.HSD)
+
+# Permutest Null hypothesis of no difference in dispersion between groups
+permutest(beta, pairwise = TRUE, permutations = 9999) # The was sig difference between Treatment
+```
+
+
+
+# MVABUND
+
+http://environmentalcomputing.net/introduction-to-mvabund/
+```{r}
+library(mvabund)
+library(dplyr)
+library(tibble)
+
+# For coral + zoox
+glom <- tax_glom(ps.coral.zoox, taxrank = "order") # tax glomming to reduce computation time for testing
+
+data <- as.data.frame(otu_table(glom)) # Check otu_table data in correct orientation (asvs as columns)
+data <- as.data.frame(t(data)) # TRanspose data so its in correct form
+data <- data %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- read.csv("sample_metadata2.txt", header = TRUE, sep = "\t")
+metadata <- left_join(data, meta) %>% # Use the left_join to ensure rows (samples) are in same order in both data and meta
+  select(SampleID, Experiment, Treatment, Day) # After the join select out only the metadata variables of interest
+
+data <- data %>%
+  select(-SampleID) # Remove the SampleID from data which was used as the key-value pair to left_join as above
+
+# Now ready for mvabund: following this tutorial here http://environmentalcomputing.net/introduction-to-mvabund/
+
+mvdata <- mvabund(data)
+
+# Contrast the species composition for 'Treatment' nested within 'Type'.
+mod1 <- manyglm(formula = mvdata ~ metadata$Experiment/metadata$Treatment, family = "negative_binomial")
+anova(mod1)
+
+# Contrast the species composition for 'Treatment' and 'Type' as separate main effects
+mod2 <- manyglm(formula = mvdata ~ metadata$Experiment + metadata$Treatment, family = "negative_binomial")
+anova(mod2)
+
+# Contrast the species composition for 'Treatment'
+mod3 <- manyglm(formula = mvdata ~ metadata$Treatment, family = "negative_binomial")
+anova(mod3)
+
+
+
+# # Rerunning just using zoox dataset - not presenting in paper
+# 
+# glom <- tax_glom(ps.zoox, taxrank = "order") # tax glomming to reduce computation time for testing
+# 
+# data <- as.data.frame(otu_table(glom)) # Check otu_table data in correct orientation (asvs as columns)
+# data <- as.data.frame(t(data)) # TRanspose data so its in correct form
+# data <- data %>%
+#   tibble::rownames_to_column(var = "SampleID")
+# 
+# meta <- read.csv("sample_metadata2.txt", header = TRUE, sep = "\t")
+# metadata <- left_join(data, meta) %>% # Use the left_join to ensure rows (samples) are in same order in both data and meta
+#   select(SampleID, Experiment, Treatment, Day) # After the join select out only the metadata variables of interest
+# 
+# data <- data %>%
+#   select(-SampleID) # Remove the SampleID from data which was used as the key-value pair to left_join as above
+# 
+# mvdata.zoox <- mvabund(data)
+# # Contrast the species composition for 'Treatment'
+# mod4 <- manyglm(formula = mvdata.zoox ~ metadata$Treatment, family = "negative_binomial")
+# anova(mod4)
+# anova(mod4, p.uni = "adjusted")
+# 
+# anovasummary <- anova.manyglm(mod4, p.uni = "adjusted") #produce an analysis of variance table
+# print(anovasummary) 
+```
+
+# Indicspecies
+
+This package provides a set of functions to assess the strength of species site group associations. It is also possible to check the statistical significance of such associations.
+
+Analysis aims to identify what species are -indicators- of groups of samples or experimental treatment.
+Indicator species is a species that is characteristic of a group of samples.
+- A perfect indicator species will only occur in one group.
+- Generalist species will occur across multiple groups and therefore not a good indicator.
+- Rare species are not sampled often, also not a good indicator.
+- Indicator values range from 0 to 1 but may also be expressed as a percentage.
+- Each species is assigned an indicator value for each group.
+- Significance of values assessed through permutations.
+```{r}
+library(indicspecies)
+# USING RAW NOT TRANSFORMED DATA
+
+# Run for zoox samples only
+glom <- tax_glom(ps.coral.zoox, taxrank = "class") # tax glomming to reduce computation time for testing
+
+data <- as.data.frame(otu_table(glom)) # Check otu_table data in correct orientation (asvs as columns)
+data <- as.data.frame(t(data))
+data <- data %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- read.csv("sample_metadata2.txt", header = TRUE, sep = "\t")
+metadata <- left_join(data, meta) %>% # Use the left_join to ensure rows (samples) are in same order in both data and meta
+  select(SampleID, Experiment, Treatment, Day) # After the join select out only the metadata variables of interest
+
+data <- data %>%
+  select(-SampleID) # Remove the SampleID from data which was used as the key-value pair to left_join as above
+
+# Now ready for indicspecies: https://cran.r-project.org/web/packages/indicspecies/vignettes/indicspeciesTutorial.pdf
+
+indicgroup.zoox <- as.integer(as.factor(metadata$Treatment)) # A vector which explains which row each group belongs to
+view(indicgroup.zoox)
+#indval.zoox <- multipatt(data, indicgroup.zoox, control = how(nperm = 999))
+summary(indval.zoox)
+```
+
+# Differential abundance 
+
+## Family level
+
+Cannot use the transformed dataset for this - use ps.fam (not ps.transformed as above)
+Use DESeq2 to look for common genera that change across treatments. Note: Positive Log2 foldchange values represent higher abundance in left vs right
+```{r}
+# Use DESeq2 to test for differential abundance of Family-level assignments between Treatments (like t test, testing every OTU and in each treatment)
+
+library("DESeq2")
+library("forcats")
+library("tibble")
+
+# Differential abundance (family) use ps.fam
+ps.fam <- tax_glom(ps.zoox, taxrank = "family")
+#ps.fam <- readRDS("ps.fam.rds")
+
+resultstax <- as.data.frame(tax_table(ps.fam)@.Data)
+resultstax <- rownames_to_column(resultstax, var = "OTU.ID") 
+
+alpha = 0.05
+treatment.da <- phyloseq_to_deseq2(ps.fam, ~ Treatment)
+treatment.da <- DESeq(treatment.da, test = "Wald", fitType = "parametric")
+
+res1 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Single"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Single")
+
+res2 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Protective")
+
+res3 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Repetitive"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Repetitive")
+
+res4 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Single", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Single vs. Protective")
+
+res5 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Single", "Repetitive"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Single vs. Repetitive")
+
+res6 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Repetitive", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Repetitive vs. Protective")
+
+# To join all results into one table
+results.da.family <- rbind(res1, res2, res3, res4, res5, res6) %>%
+  mutate(family = fct_reorder(family, log2FoldChange))
+
+# Save data to .csv file
+# write.csv(results.da.family, file = "differential_abundance_output_family.csv")
+```
+
+### Plot DA - family level
+```{r}
+error <- results.da.family$lfcSE
+
+ggplot(results.da.family, aes(x = log2FoldChange, y = family)) +
+  #geom_errorbarh(aes(xmin = log2FoldChange + error, xmax = log2FoldChange - error)) +
+  geom_point(size = 3) +
+  facet_grid(~ test) +
+  theme(aspect.ratio = 16/9) +
+  geom_vline(xintercept = 0)
+```
+
+### Plot DA - family (transposed axis) using same code as for OTU DA plot 
+Colour coded points to group at family level
+
+```{r}
+library("drlib")
+
+error <- results.da.family$lfcSE
+
+ggplot(results.da.family, aes(x = reorder_within(row, -log2FoldChange, test), y = log2FoldChange, colour = family)) +
+  geom_errorbar(aes(ymin = log2FoldChange + lfcSE, 
+       ymax = log2FoldChange - lfcSE), 
+       width = 0.1, 
+       colour = "black") +
+  geom_point(size = 3) +
+  facet_grid(~ test, scales = "free_x") +
+  theme(aspect.ratio = 1) +
+  geom_hline(yintercept = 0) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0.5))
+```
+
+
+
+## OTU level
+
+```{r}
+# Use DESeq2 to test for differential abundance of Family-level assignments between Treatments (like t test, testing every OTU and in each treatment)
+
+library("DESeq2")
+library("forcats")
+library("tibble")
+
+# Differential abundance (OTU) use ps.zoox
+
+resultstax <- as.data.frame(tax_table(ps.zoox))
+resultstax <- rownames_to_column(resultstax, var = "OTU.ID") 
+
+alpha = 0.05
+treatment.da <- phyloseq_to_deseq2(ps.zoox, ~ Treatment)
+treatment.da <- DESeq(treatment.da, test = "Wald", fitType = "parametric")
+
+res1 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Single"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Single")
+
+res2 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Protective")
+
+res3 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Repetitive"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Repetitive")
+
+res4 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Single", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Single vs. Protective")
+
+res5 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Single", "Repetitive"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Single vs. Repetitive")
+
+res6 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Repetitive", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Repetitive vs. Protective")
+
+# To join all results into one table
+results.da.otu <- rbind(res1, res2, res3, res4, res5, res6) %>%
+  mutate(row = fct_reorder(row, log2FoldChange))
+
+# Save data to .csv file
+#write.csv(results.da.otu, file = "differential_abundance_output_otu.csv")
+```
+
+### Plot DA - OTU level
+```{r}
+library("drlib")
+
+error <- results.da.otu$lfcSE
+
+ggplot(results.da.otu, aes(x = reorder_within(row, -log2FoldChange, test), y = log2FoldChange, colour = phylum)) +
+  geom_errorbar(aes(ymin = log2FoldChange + lfcSE, 
+       ymax = log2FoldChange - lfcSE), 
+       width = 0.1, 
+       colour = "black") +
+  geom_point(size = 3) +
+  facet_grid(~ test, scales = "free_x") +
+  theme(aspect.ratio = 1) +
+  geom_hline(yintercept = 0) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0.5))
+```
+
+# Core microbiome - ZOOX
+## 100% Core OTU level
+
+Venn diagrams using http://www.interactivenn.net/ 
+
+```{r}
+trans.f <- transform_sample_counts(ps.zoox, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+all_core <- prune_taxa(a, trans.f)
+zoox_core_OTU.melt <- psmelt(all_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, genus, species) %>% # Treatment
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+#write.csv(all_core.melt, file = "zoox_core100_OTU.csv")
+# Calculate total contribution of these core to overall relative abundance
+sum(zoox_core_OTU.melt$Average_rel)
+```
+
+### Plot 100% core OTU
+```{r}
+# Plotting with above code because TREATMENT was not included in group_by **********
+ggplot(zoox_core_OTU.melt, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = family), position = "stack") + 
+    #scale_y_continuous(labels = scales::percent) +
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 2))
+```
+
+## 100% Core GENUS level
+
+```{r}
+ps.zoox.genus <- tax_glom(ps.zoox, taxrank = "genus")
+
+trans.f <- transform_sample_counts(ps.zoox.genus, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+all_core_genus <- prune_taxa(a, trans.f)
+zoox_core_genus.melt <- psmelt(all_core_genus) %>%
+  group_by(OTU, Treatment, kingdom, phylum, class, order, family, genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+#write.csv(zoox_core_genus.melt, file = "zoox_core100_genus_perTreatment.csv")
+#sum(zoox_core_genus.melt$Average_rel)
+```
+
+### Plot 100% core GENUS
+```{r}
+# Plotting with above code because TREATMENT was not included in group_by **********
+ggplot(zoox_core_genus.melt, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = family), position = "stack") + 
+    #scale_y_continuous(labels = scales::percent) +
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 2))
+```
+
+## Per Treatment - Figure 3c core OTUs
+```{r}
+# Control - 109 core OTUs
+Control <- subset_samples(ps.zoox, Treatment == "Control")
+Control.trans <- transform_sample_counts(Control, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Control.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Control.trans, flist)
+Control_core <- prune_taxa(a, Control.trans)
+# View(tax_table(Control_core)@.Data)
+Control_core.melt <- psmelt(Control_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Control_core.melt, file = "Control_core100_OTU.csv")
+
+# Protective - 92 core OTUs
+Protective <- subset_samples(ps.zoox, Treatment == "Protective")
+Protective.trans <- transform_sample_counts(Protective, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Protective.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Protective.trans, flist)
+Protective_core <- prune_taxa(a, Protective.trans)
+# View(tax_table(Protective_core)@.Data)
+Protective_core.melt <- psmelt(Protective_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Protective_core.melt, file = "Protective_core100_OTU.csv")
+
+# Repetitive - 67 core OTUs
+Repetitive <- subset_samples(ps.zoox, Treatment == "Repetitive")
+Repetitive.trans <- transform_sample_counts(Repetitive, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Repetitive.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Repetitive.trans, flist)
+Repetitive_core <- prune_taxa(a, Repetitive.trans)
+# View(tax_table(Repetitive_core)@.Data)
+Repetitive_core.melt <- psmelt(Repetitive_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Repetitive_core.melt, file = "Repetitive_core100_OTU.csv")
+
+# Single - 99 core OTUs
+Single <- subset_samples(ps.zoox, Treatment == "Single")
+Single.trans <- transform_sample_counts(Single, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Single.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Single.trans, flist)
+Single_core <- prune_taxa(a, Single.trans)
+# View(tax_table(Single_core)@.Data)
+Single_core.melt <- psmelt(Single_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Single_core.melt, file = "Single_core100_OTU.csv")
+
+# Combine into one file then write as csv
+zooxcore100_otu <- rbind(Control_core.melt, Protective_core.melt, Repetitive_core.melt, Single_core.melt)
+#View(zooxcore100_otu)
+
+#write.csv(x = zooxcore100_otu, file = "zoox_core100_otulevel.csv")
+```
+
+
+# Core microbiome - ASPERA
+## 100% Core OTU level
+
+```{r}
+trans.f <- transform_sample_counts(ps.aspera, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+all_core <- prune_taxa(a, trans.f)
+aspera_core_OTU.melt <- psmelt(all_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, genus, species) %>% # Treatment
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+#write.csv(all_core.melt, file = "zoox_core100_OTU.csv")
+sum(aspera_core_OTU.melt$Average_rel)
+```
+Plot 100% core OTU
+```{r}
+# Plotting with above code because TREATMENT was not included in group_by **********
+ggplot(aspera_core_OTU.melt, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = family), position = "stack") + 
+    #scale_y_continuous(labels = scales::percent) +
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 2))
+```
+
+## 100% Core GENUS level
+```{r}
+# Using the 'keepers' subset of data
+ps.aspera.genus <- tax_glom(ps.aspera, taxrank = "genus")
+
+trans.f <- transform_sample_counts(ps.aspera.genus, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+all_core_genus <- prune_taxa(a, trans.f)
+aspera_core_genus.melt <- psmelt(all_core_genus) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+#write.csv(all_core_genus.melt, file = "zoox_core100_genus.csv")
+```
+Plot 100% core GENUS
+```{r}
+# Plotting with above code because TREATMENT was not included in group_by **********
+ggplot(aspera.all_core_genus.melt, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = family), position = "stack") + 
+    #scale_y_continuous(labels = scales::percent) +
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 2))
+```
+
+
+# Core microbiome Coral + Zoox
+## 100% core at OTU level
+```{r}
+# Using the 'ps.coral.zoox' subset of data
+
+trans.f <- transform_sample_counts(ps.coral.zoox, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+coralzoox_core <- prune_taxa(a, trans.f)
+coralzoox_core_OTU.melt <- psmelt(coralzoox_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, genus) %>% # Treatment
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+```
+
+## 100% core GENUS
+
+```{r}
+# Using the 'ps.coral.zoox' subset of data
+ps.genus <- tax_glom(ps.coral.zoox, taxrank = "genus")
+
+trans.f <- transform_sample_counts(ps.genus, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+all_core_order <- prune_taxa(a, trans.f)
+coralzoox_core_genus.melt <- psmelt(all_core_order) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+#write.csv(all_core_order.melt, file = "coral+zoox_core100_order.csv")
+```
+
+## 100% core ORDER
+
+```{r}
+# Using the 'ps.coral.zoox' subset of data
+ps.order <- tax_glom(ps.coral.zoox, taxrank = "order")
+
+trans.f <- transform_sample_counts(ps.order, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+all_core_order <- prune_taxa(a, trans.f)
+coralzoox_core_order.melt <- psmelt(all_core_order) %>%
+  group_by(OTU, kingdom, phylum, class, order) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+#write.csv(all_core_order.melt, file = "coral+zoox_core100_order.csv")
+```
+### Plot 100% core ORDER
+```{r}
+# Plotting with above code because TREATMENT was not included in group_by **********
+ggplot(coralzoox_core_order.melt, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = order), position = "stack") + 
+    #scale_y_continuous(labels = scales::percent) +
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 2))
+```
+
+
+
+## Per Treatment - USE FOR VENN Fig 3b
+100% Core OTU each TREATMENT 
+```{r}
+# Control - 109 core OTUs
+Control <- subset_samples(ps.coral.zoox, Treatment == "Control")
+Control.trans <- transform_sample_counts(Control, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Control.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Control.trans, flist)
+Control_core <- prune_taxa(a, Control.trans)
+Control_core.melt <- psmelt(Control_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Control_core.melt, file = "Control_core100_OTU.csv")
+
+# Protective - 92 core OTUs
+Protective <- subset_samples(ps.coral.zoox, Treatment == "Protective")
+Protective.trans <- transform_sample_counts(Protective, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Protective.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Protective.trans, flist)
+Protective_core <- prune_taxa(a, Protective.trans)
+Protective_core.melt <- psmelt(Protective_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Protective_core.melt, file = "Protective_core100_OTU.csv")
+
+# Repetitive - 67 core OTUs
+Repetitive <- subset_samples(ps.coral.zoox, Treatment == "Repetitive")
+Repetitive.trans <- transform_sample_counts(Repetitive, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Repetitive.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Repetitive.trans, flist)
+Repetitive_core <- prune_taxa(a, Repetitive.trans)
+Repetitive_core.melt <- psmelt(Repetitive_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Repetitive_core.melt, file = "Repetitive_core100_OTU.csv")
+
+# Single - 99 core OTUs
+Single <- subset_samples(ps.coral.zoox, Treatment == "Single")
+Single.trans <- transform_sample_counts(Single, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Single.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Single.trans, flist)
+Single_core <- prune_taxa(a, Single.trans)
+Single_core.melt <- psmelt(Single_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Single_core.melt, file = "Single_core100_OTU.csv")
+
+# Aspera - 5 core OTUs
+Aspera <- subset_samples(ps.coral.zoox, Treatment == "Aspera")
+Aspera.trans <- transform_sample_counts(Aspera, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Aspera.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Aspera.trans, flist)
+Aspera_core <- prune_taxa(a, Aspera.trans)
+Aspera_core.melt <- psmelt(Aspera_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Aspera_core.melt, file = "Aspera_core100_OTU.csv")
+
+# Combine into one file then write as csv
+all_core100_site_otu <- rbind(Control_core.melt, Protective_core.melt, Repetitive_core.melt, Single_core.melt, Aspera_core.melt)
+#View(all_core100_site_otu)
+
+#write.csv(x = all_core100_site_otu, file = "coral+zoox_core100_pertreatment_otulevel.csv")
+```
+
+### Plot 100% core OTU per TREATMENT
+
+```{r}
+ggplot(all_core100_site_otu, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = order), position = "stack") + 
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 3))
+```
+
+## Coral + Zoox (pooled zoox) For Figure 3a Venn
+```{r}
+# Coral
+Coral <- subset_samples(ps.coral.zoox, Experiment == "Coral")
+Coral.trans <- transform_sample_counts(Coral, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Coral.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Coral.trans, flist)
+Coral_core <- prune_taxa(a, Coral.trans)
+Coral_core.melt <- psmelt(Coral_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, genus, Experiment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Control_core.melt, file = "Control_core100_OTU.csv")
+
+# Zoox
+Zoox <- subset_samples(ps.coral.zoox, Experiment == "Zoox")
+Zoox.trans <- transform_sample_counts(Zoox, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Zoox.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Zoox.trans, flist)
+Zoox_core <- prune_taxa(a, Zoox.trans)
+Zoox_core.melt <- psmelt(Zoox_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, genus, Experiment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+# write.csv(Protective_core.melt, file = "Protective_core100_OTU.csv")
+
+coralzoox_core100_otu <- rbind(Coral_core.melt, Zoox_core.melt)
+#View(coralzoox_core100_otu)
+
+#write.csv(x = coralzoox_core100_otu, file = "coral+zoox_core100_otulevel.csv")
+```
+
+## Coral + Zoox Per Treatment - GENUS
+
+```{r}
+ps.fam <- tax_glom(ps.coral.zoox, taxrank = "genus")
+ps.fam <- transform_sample_counts(ps.fam, function(x) x/sum(x)*100)
+
+# Control - 30 core
+Control <- subset_samples(ps.fam, Treatment == "Control")
+Control.trans <- transform_sample_counts(Control, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Control.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Control.trans, flist)
+Control_core <- prune_taxa(a, Control.trans)
+Control_core.melt <- psmelt(Control_core) %>%
+  group_by(Treatment, kingdom, phylum, class, order, family, genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Control_core.melt, file = "Control_core100_OTU.csv")
+
+# Protective - 32 core
+Protective <- subset_samples(ps.fam, Treatment == "Protective")
+Protective.trans <- transform_sample_counts(Protective, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Protective.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Protective.trans, flist)
+Protective_core <- prune_taxa(a, Protective.trans)
+Protective_core.melt <- psmelt(Protective_core) %>%
+  group_by(Treatment, kingdom, phylum, class, order, family, genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Protective_core.melt, file = "Protective_core100_OTU.csv")
+
+# Repetitive - 25 core
+Repetitive <- subset_samples(ps.fam, Treatment == "Repetitive")
+Repetitive.trans <- transform_sample_counts(Repetitive, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Repetitive.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Repetitive.trans, flist)
+Repetitive_core <- prune_taxa(a, Repetitive.trans)
+Repetitive_core.melt <- psmelt(Repetitive_core) %>%
+  group_by(Treatment, kingdom, phylum, class, order, family, genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Repetitive_core.melt, file = "Repetitive_core100_OTU.csv")
+
+# Single - 28 core
+Single <- subset_samples(ps.fam, Treatment == "Single")
+Single.trans <- transform_sample_counts(Single, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Single.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Single.trans, flist)
+Single_core <- prune_taxa(a, Single.trans)
+Single_core.melt <- psmelt(Single_core) %>%
+  group_by(Treatment, kingdom, phylum, class, order, family, genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Single_core.melt, file = "Single_core100_OTU.csv")
+
+# Aspera - 11 core
+Aspera <- subset_samples(ps.fam, Treatment == "Aspera")
+Aspera.trans <- transform_sample_counts(Aspera, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Aspera.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Aspera.trans, flist)
+Aspera_core <- prune_taxa(a, Aspera.trans)
+Aspera_core.melt <- psmelt(Aspera_core) %>%
+  group_by(Treatment, kingdom, phylum, class, order, family, genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Aspera_core.melt, file = "Aspera_core100_OTU.csv")
+
+# Combine into one file then write as csv
+all_core100_treatment_genus <- rbind(Control_core.melt, Protective_core.melt, Repetitive_core.melt, Single_core.melt, Aspera_core.melt)
+#View(all_core100_site_otu)
+
+#write.csv(x = all_core100_treatment_genus, file = "coral+zoox_core100_treatment_family.csv")
+
+# Plotting with above code because TREATMENT was not included in group_by **********
+ggplot(all_core100_treatment_genus, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = order), position = "stack") + 
+    #scale_y_continuous(labels = scales::percent) +
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 2))
+```
+
+
+# Heatmaps 
+## Phylum level, relative abundance > 1%
+
+```{r}
+# Creating a heatmap using transformed dataset - this is zoox and coral dataset (using ps not ps.zoox)
+glom <- tax_glom(ps.tree.coral.zoox, taxrank = "order")
+glom <- transform_sample_counts(glom, function(x) x/sum(x)*100)
+
+# heatmap <- as.data.frame(otu_table(glom)@.Data)
+# write.csv(heatmap, file = "heatmap2.csv")
+
+# Write a tax table from the ps object
+# heatmaptaxtab <- as.data.frame(tax_table(glom)@.Data)
+# write.csv(heatmaptaxtab, file = "heatmaptaxtab.csv")
+
+library(scales)
+order <- c("Coral.1.C.380.L1", "Coral.1.C.380.L2", "Coral.1.C.380.L3", "Coral.1.C.380.R1", "Coral.1.C.380.R2", "Coral.1.C.380.R3", "Coral.4.C.380.L2", "Coral.4.C.380.L3", "Coral.4.C.380.R1", "Coral.4.C.380.R2", "Coral.4.C.380.R3", "Coral.9.C.380.L1", "Coral.9.C.380.L2", "Coral.9.C.380.L3", "Coral.9.C.380.R1", "Coral.9.C.380.R2", "Coral.9.C.380.R3", "Coral.14.C.380.L2", "Coral.14.C.380.L3", "Coral.14.C.380.R1", "Coral.14.C.380.R2", "Coral.14.C.380.R3", "Zoox.1.27F", "Zoox.2.27F", "Zoox.3.27F", "Zoox.4.27F", "Zoox.5.27F", "Zoox.6.27F", "Zoox.13.27F", "Zoox.14.27F", "Zoox.15.27F", "Zoox.16.27F", "Zoox.17.27F", "Zoox.18.27F", "Zoox.19.27F", "Zoox.20.27F", "Zoox.21.27F", "Zoox.22.27F", "Zoox.23.27F", "Zoox.24.27F", "Zoox.10.27F", "Zoox.11.27F", "Zoox.12.27F", "Zoox.7.27F", "Zoox.8.27F", "Zoox.9.27F")
+
+TOP <- names(sort(taxa_sums(glom), TRUE)[1:40])
+TOP <- prune_taxa(TOP, glom)
+
+# Choose colours for gradient: https://www.hexcolortool.com/#001b3d
+plot_heatmap(TOP, method = "PCoA", distance = "wunifrac", 
+             sample.order = order, 
+             sample.label = "Treatment", 
+             taxa.label = "order", 
+             taxa.order = "phylum", 
+             low = "#ffffff", high = "#001b3d", trans = identity_trans()) # add trans = identity_trans() if using transformed
+# low is black #000033
+#white is #ffffff, another is #66CCFF
+
+# clustering with hierarchical groups
+# heatmap(otu_table(glom))
+
+
+# Matts Code # Can you have OTU number and class/family on y axis?
+glom <- tax_glom(ps.coral.zoox, taxrank = "order")
+glom <- transform_sample_counts(glom, function(x) x/sum(x))
+
+TOP <- names(sort(taxa_sums(glom), TRUE)[1:50])
+TOP <- prune_taxa(TOP, glom)
+
+plot_heatmap(TOP, "PCoA", "bray", sample.order = order, low="#000033", high="#338DF4", taxa.label = "order", trans = identity_trans()) # blue
+#plot_heatmap(TOP, "PCoA", "bray", sample.order = order, low="#000033", high="#FF3300", taxa.label = "order", trans = identity_trans()) # red, high="#CCFF66" is lime
+```
+
+## Order level, relative abundance >1%
+
+```{r}
+library(scales)
+order <- c("Coral.1.C.380.L1", "Coral.1.C.380.L2", "Coral.1.C.380.L3", "Coral.1.C.380.R1", "Coral.1.C.380.R2", "Coral.1.C.380.R3", "Coral.4.C.380.L2", "Coral.4.C.380.L3", "Coral.4.C.380.R1", "Coral.4.C.380.R2", "Coral.4.C.380.R3", "Coral.9.C.380.L1", "Coral.9.C.380.L2", "Coral.9.C.380.L3", "Coral.9.C.380.R1", "Coral.9.C.380.R2", "Coral.9.C.380.R3", "Coral.14.C.380.L2", "Coral.14.C.380.L3", "Coral.14.C.380.R1", "Coral.14.C.380.R2", "Coral.14.C.380.R3", "Zoox.1.27F", "Zoox.2.27F", "Zoox.3.27F", "Zoox.4.27F", "Zoox.5.27F", "Zoox.6.27F", "Zoox.10.27F", "Zoox.11.27F", "Zoox.12.27F", "Zoox.7.27F", "Zoox.8.27F", "Zoox.9.27F", "Zoox.13.27F", "Zoox.14.27F", "Zoox.15.27F", "Zoox.16.27F", "Zoox.17.27F", "Zoox.18.27F", "Zoox.19.27F", "Zoox.20.27F", "Zoox.21.27F", "Zoox.22.27F", "Zoox.23.27F", "Zoox.24.27F")
+plot_heatmap(glom, method = "NMDS", distance = "bray", sample.order = order, sample.label = "Treatment", taxa.label = "order")
+```
+
+# Generate + save relative abundance .csv files
+```{r}
+ps.transformed <- transform_sample_counts(ps.zoox, function(x) x/sum(x)*100)
+#ps.transformed <- filter_taxa(ps.transformed, function(x) mean(x) > 1, TRUE)
+glom <- tax_glom(ps.transformed, taxrank = "genus")
+
+n <- length(sample_names(glom))
+long <- psmelt(glom) %>%
+  group_by(Treatment, phylum, class, order, family, genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+#write.csv(long, file = "zoox_treatment.relative.abundance_all.csv")
+```
+
+# Saving files as .cs
+**** NOT RELATIVE ABUNDANCE ****
+```{r}
+## Saving files with compacted taxonomy. Change the taxrank and the write.csv file = and in select, write -(taxa level to remove)
+
+# Saving to family level and removing genus and species columns
+glom <- tax_glom(ps, taxrank = "family")
+otu <- as.data.frame(otu_table(glom))
+tax <- as.data.frame(tax_table(glom)) %>%
+  select(-genus, -species)
+output <- cbind(otu, tax)
+# write.csv(output, file = "ps.fam.csv")
+
+# Saving to order level and removing family, genus and species columns
+glom <- tax_glom(ps, taxrank = "order")
+otu <- as.data.frame(otu_table(glom))
+tax <- as.data.frame(tax_table(glom)) %>%
+  select(-family, -genus, -species)
+output <- cbind(otu, tax)
+# write.csv(output, file = "ps.order.csv")
+
+# Saving to class level and removing order, family, genus and species columns
+glom <- tax_glom(ps, taxrank = "class")
+otu <- as.data.frame(otu_table(glom))
+tax <- as.data.frame(tax_table(glom)) %>%
+  select(-order, -family, -genus, -species)
+output <- cbind(otu, tax)
+write.csv(output, file = "ps.class.csv")
+```
+
+
+
+
+
+# ____________
+# Old code
+
+## ?? OTU BILL table for abundance - for supplementary - assign Treatment to legend colours for bars
+
+```{r}
+# ps.fam <- tax_glom(ps, taxrank = "family")
+# ps.transformedf <- transform_sample_counts(ps.fam, function(x) x/sum(x)*100)
+# melt <- psmelt(ps.transformed) 
+
+library("Rmisc")
+meltsummary <- summarySE(melt, measurevar = "Abundance", groupvars = c("Treatment","Replicate","phylum","class","order","family"))
+
+ggplot(data = meltsummary, mapping = aes(x = family, y = Abundance)) +
+geom_bar(stat = "identity", position = position_dodge(1), colour = "black") +
+  theme(aspect.ratio = 1) +
+  theme_bw() +
+  theme(panel.grid = element_blank(), axis.text = element_text(angle = 90, hjust = 0, vjust = 0.5)) +
+  #facet_grid(.~Treatment) +
+  ylab("Relative abundance (%)")
+```
+
+```{r}
+# "More explicitly, the sum of an OTU across all samples is greater than 0.005% of all OTUs."
+
+minTotRelAbun = 1e-5
+x = taxa_sums(fullset)
+keepTaxa = which((x / sum(x)) > minTotRelAbun)
+prunedSet = prune_taxa(keepTaxa, fullset)
+
+keepTaxa = (x / sum(x)) > minTotRelAbun
+which is a logical vector with TRUE for the taxa to keep, or
+
+keepTaxa = taxa_names(my_data)[which((x / sum(x)) > minTotRelAbun)]
+```
+
+
+## 100% Core GENUS each TREATMENT - OLD??? Just ps
+```{r}
+# using
+ps.genus <- tax_glom(ps, taxrank = "genus")
+
+# Control - 72 core genera
+Control <- subset_samples(ps.genus, Treatment == "Control")
+Control.trans <- transform_sample_counts(Control, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Control.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Control.trans, flist)
+Control_core <- prune_taxa(a, Control.trans)
+Control_core_genus.melt <- psmelt(Control_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Control_core_genus.melt, file = "Control_core100_genus.csv")
+
+# Protective - 57 core genera
+Protective <- subset_samples(ps.genus, Treatment == "Protective")
+Protective.trans <- transform_sample_counts(Protective, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Protective.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Protective.trans, flist)
+Protective_core <- prune_taxa(a, Protective.trans)
+Protective_core_genus.melt <- psmelt(Protective_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Protective_core_genus.melt, file = "Protective_core100_genus.csv")
+
+# Repetitive - 48 core genera
+Repetitive <- subset_samples(ps.genus, Treatment == "Repetitive")
+Repetitive.trans <- transform_sample_counts(Repetitive, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Repetitive.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Repetitive.trans, flist)
+Repetitive_core <- prune_taxa(a, Repetitive.trans)
+Repetitive_core_genus.melt <- psmelt(Repetitive_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Repetitive_core_genus.melt, file = "Repetitive_core100_genus.csv")
+
+# Single - 56 core genera
+Single <- subset_samples(ps.genus, Treatment == "Single")
+Single.trans <- transform_sample_counts(Single, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Single.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Single.trans, flist)
+Single_core <- prune_taxa(a, Single.trans)
+Single_core_genus.melt <- psmelt(Single_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Single_core_genus.melt, file = "Single_core100_genus.csv")
+
+# Aspera - 14 core genera
+Aspera <- subset_samples(ps.genus, Treatment == "Aspera")
+Aspera.trans <- transform_sample_counts(Aspera, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Aspera.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Aspera.trans, flist)
+Aspera_core <- prune_taxa(a, Aspera.trans)
+Aspera_core_genus.melt <- psmelt(Aspera_core) %>%
+  group_by(OTU, kingdom, phylum, class, order, family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# write.csv(Aspera_core_genus.melt, file = "Aspera_core100_genus.csv")
+
+# Combine into one file then write as csv
+all_core100_site_genus <- rbind(Control_core_genus.melt, Protective_core_genus.melt, Repetitive_core_genus.melt, Single_core_genus.melt, Aspera_core_genus.melt)
+#View(all_core100_site_genus)
+
+#write.csv(x = all_core100_site_genus, file = "coral+zoox_core100_pertreatment_genuslevel.csv.csv")
+```
+
+### Plot 100% core GENUS per TREATMENT - OLD
+
+```{r}
+ggplot(all_core100_site_genus, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = order), position = "stack") + 
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 3))
+```
+
+## MVABUND - OLD analysis not used here anymore
+
+http://environmentalcomputing.net/introduction-to-mvabund/
+```{r}
+library(mvabund)
+library(dplyr)
+library(tibble)
+
+glom <- tax_glom(ps.coral.zoox, taxrank = "order") # tax glomming to reduce computation time for testing
+
+data <- as.data.frame(otu_table(glom)) # Check otu_table data in correct orientation (asvs as columns)
+data <- as.data.frame(t(data)) # TRanspose data so its in correct form
+data <- data %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- read.csv("sample_metadata2.txt", header = TRUE, sep = "\t")
+metadata <- left_join(data, meta) %>% # Use the left_join to ensure rows (samples) are in same order in both data and meta
+  select(SampleID, Experiment, Treatment, Day) # After the join select out only the metadata variables of interest
+
+data <- data %>%
+  select(-SampleID) # Remove the SampleID from data which was used as the key-value pair to left_join as above
+
+# Now ready for mvabund: following this tutorial here http://environmentalcomputing.net/introduction-to-mvabund/
+
+mvdata <- mvabund(data)
+plot(mvabund)
+
+# Contrast the species composition across Experiments to see if the models support our observations.
+mod1 <- manyglm(mvdata ~ metadata$Treatment, family = "negative_binomial")
+summary <- summary.manyglm(mod1) #obtain or print a summary of the results
+print(summary)
+#  Check our model assumptions - use the plot function to generate a plot of residuals. If the model is a good fit, we should see a random scatter of points. What we don't want to see is a relationship, either linear or curvilinear, or a fan shape. This could mean that one of our assumptions was wrong. Ours didn't look good, so instead of using "poisson" distribution, we can use the "negative_binomial" distribution
+plot(mod1)
+
+# Test the multivariate hypothesis of whether species composition varied across the Experiments using the anova function
+#anova(mod1) # WARNING: Takes a long time to run (at OTU/ASV level) and will crash R if you try to abort:
+            # length(taxa_names(glom)) = 77
+            # Class level (77 classes): Time elapsed 1 min 53 sec
+# There is a significant effect of Experiment on the microbial community data: P <  0.001 ***.
+
+# Class level (301 families): Time elapsed 5 min 43 sec
+# Family level (574 genera): Time elapsed 10 min 20 sec  (not saved)
+
+#To examine this further, and see which microbe species are more likely to be found at which site, we can run univariate tests for each species separately. This is done by using the p.uni="adjusted" argument in the anova function.
+anova(mod1, p.uni = "adjusted")
+anovasummary <- anova.manyglm(mod1, p.uni = "adjusted") #produce an analysis of variance table
+print(anovasummary) 
+
+
+# By altering the formula in mvabund, we can test more complex models. For example, to fit a model with both Experiment and Treatment, we would use
+# mod2 <- manyglm(mvdata ~ metadata$Experiment*metadata$Treatment, family="negative_binomial")
+# anova(mod2)
+# anova(mod2, p.uni = "adjusted")
+```
