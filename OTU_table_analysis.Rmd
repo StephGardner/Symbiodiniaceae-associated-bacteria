@@ -1,0 +1,968 @@
+---
+title: "Symbiodiniaceae-associated bacteria_reanalysis"
+author: "S.G.Gardner"
+date: "20 December 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(phyloseq)
+library(ggplot2)
+library(vegan)
+library(permute)
+library(lattice)
+library(plyr)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(genefilter)
+library(microbiome)
+library(tidyverse)
+library(scales)
+library(tidyheatmap)
+library(wesanderson)
+library(Biostrings)
+library(ggsci)
+library(rstatix)
+library(ggpubr)
+```
+
+# Data import
+
+```{r}
+# Reference sequences
+seqs <- readDNAStringSet("ASV_nochim.fasta")
+
+# Calculate mean sequence length (to report after removing chimeras etc)
+class(seqs)
+
+DNAStringSet_to_df <- function(DNAStringSet){
+  seq_df <- data.frame(names = names(DNAStringSet),
+                       seqs = paste(DNAStringSet))
+  return(seq_df)
+}
+
+seq_df <- DNAStringSet_to_df(seqs)
+seq_df <- seq_df %>% mutate(length = str_length(seqs)) %>% summarise(mean_length = mean(length)) #(filter and trimmed the forward reads at 260)
+
+ps <- readRDS("phyloseq_single-reads.rds") # This is forward reads only
+
+# Replace NA with Unassigned
+taxtab <- as.data.frame(tax_table(ps)@.Data)
+taxtab <- taxtab %>%
+  apply(2, function(x) gsub("^$|^ $", NA, x)) %>%
+  replace_na("Unassigned")
+
+otutab <- as.data.frame(t(otu_table(ps)@.Data))
+rownames(taxtab) <- rownames(otutab)
+
+samptab <- read.table("sample_metadataALL_new.txt", header = TRUE, sep = "\t")
+rownames(samptab) <- samptab$SampleID # rownames to match column names as above
+samptab <- sample_data(samptab)
+
+ps <- phyloseq(tax_table(taxtab), otu_table(otutab, taxa_are_rows = TRUE), sample_data(samptab), refseq(seqs))
+
+# Import tree and merge
+tree <- read_tree("fastree_result.tre")
+ps <- merge_phyloseq(ps, tree)
+
+# Subset the data to keep only samples for this study (remove foram etc)
+ps <- subset_samples(ps, KeepData == "y")
+ps <- prune_taxa(taxa_sums(ps) > 1, ps)
+
+# Data cleanup - remove Chloroplast and Mitochondria from dataset (phyloseq object)
+ps <- subset_taxa(ps, Order != "Chloroplast")
+ps <- subset_taxa(ps, Family != "Mitochondria")
+ps <- subset_taxa(ps, Kingdom != "Unassigned")
+ps <- subset_taxa(ps, Phylum != "Unassigned")
+ps <- subset_taxa(ps, Kingdom != "Eukaryota")
+ps <- subset_taxa(ps, Kingdom != "Archaea")
+
+# Remove 3 samples 14.C.380.L1 + 4.C.380.L1 because low # sequences
+ps <- subset_samples(ps, SampleID != "14.C.380.L1")
+ps <- subset_samples(ps, SampleID != "4.C.380.L1")
+ps <- subset_samples(ps, SampleID != "9.C.380.L1")
+
+# prune OTUs that are not present in any of the samples
+ps <- prune_taxa(taxa_sums(ps) > 1, ps) # Remove any singletons that have been created due to subsetting
+
+# Create seperate phyloseq objects
+ps.zoox <- subset_samples(ps, Treatment != "Aspera") # Removing coral (aspera) samples
+ps.zoox <- prune_taxa(taxa_sums(ps.zoox) > 1, ps.zoox)
+
+ps.aspera <- subset_samples(ps, Treatment == "Aspera") # keeping only Aspera
+ps.aspera <- prune_taxa(taxa_sums(ps.aspera) > 1, ps.aspera)
+
+ps.coral.zoox <- ps # Phyloseq file with coral and zoox data
+ps.coral.zoox <- prune_taxa(taxa_sums(ps.coral.zoox) > 1, ps.coral.zoox)
+```
+
+# Relative abundance bar plots 
+## Coral + Zoox
+
+```{r}
+ps.order <- tax_glom(ps, taxrank = "Order")
+
+ps.transformedf <- transform_sample_counts(ps.order, function(x) x/sum(x)*100)
+ps.transformedf <- filter_taxa(ps.transformedf, function(x) sum(x) >= 1, TRUE)
+
+melt <- psmelt(ps.transformedf) 
+
+ggplot(data = melt, aes(x = Replicate, y = Abundance)) +
+      geom_bar(stat = "identity", aes(fill = Order), colour = "black", position = "fill") +
+  facet_grid(~Treatment) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_continuous(labels = c(1, 2, 3, 4, 5, 6), breaks = c(1, 2, 3, 4, 5, 6)) +
+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), aspect.ratio = 1) +
+  theme(aspect.ratio = 1, legend.position = "bottom") +
+      ylab("Relative abundance (%)") +
+      guides(fill = guide_legend(ncol = 5))
+```
+
+## Coral
+
+```{r}
+ps.fam <- tax_glom(ps.aspera, taxrank = "Order")
+ps.transformedf <- transform_sample_counts(ps.fam, function(x) x/sum(x)*100)
+ps.transformedf <- filter_taxa(ps.transformedf, function(x) sum(x) >= 0.01, TRUE)
+
+melt <- psmelt(ps.transformedf) %>%
+      group_by(Treatment,OTU, Phylum, Class, Order) %>%
+     summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+ggplot(data = melt, aes(x = Replicate, y = Abundance)) +
+      geom_bar(stat = "identity", aes(fill = Order), colour = "black", position = "fill") +
+  facet_grid(~Day) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_continuous(labels = c(1, 2, 3, 4, 5, 6), breaks = c(1, 2, 3, 4, 5, 6)) +
+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), aspect.ratio = 1) +
+  theme(aspect.ratio = 1, legend.position = "bottom") +
+      ylab("Relative abundance (%)") +
+      guides(fill = guide_legend(ncol = 5))
+```
+
+## Zoox
+
+```{r}
+ps.fam <- tax_glom(ps.zoox, taxrank = "Family")
+ps.transformedf <- transform_sample_counts(ps.zoox, function(x) x/sum(x)*100)
+ps.transformedf <- filter_taxa(ps.transformedf, function(x) sum(x) >= 0.01, TRUE)
+
+melt <- psmelt(ps.transformedf) %>%
+      group_by(Treatment, OTU, Phylum, Class, Order, Family, Genus) %>%
+     summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+```
+
+# PCoA
+
+```{r}
+library(ggalt)
+
+# Weighted unifrac
+trans <- microbiome::transform(ps.zoox, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+plotbray <- ordinate(trans, method = "PCoA", distance = "unifrac", weighted = TRUE) 
+PCoA_unifw <- plot_ordination(trans, plotbray, shape = "Treatment", color = "Treatment") +
+  geom_point(size = 4, aes(alpha = 0.5)) +
+  geom_encircle(aes(fill = Treatment), s_shape = 1, expand = 0, alpha = 0.2, show.legend = FALSE) +
+  scale_shape_manual(values = c(15, 16, 17, 18, 19)) +
+  theme(aspect.ratio = 1)
+
+# Tidy up the colours
+PCoA_unifw$layers <- PCoA_unifw$layers[-1]
+
+PCoA_unifw <- PCoA_unifw + scale_color_manual(breaks = c("Control", "Protective", "Repetitive", "Single"), 
+                       values = c("black", "blue2", "green4", "red"))
+
+# Unweighted unifrac plot
+trans <- microbiome::transform(ps.zoox, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+plotbray <- ordinate(trans, method = "PCoA", distance = "unifrac", weighted = FALSE)
+PCoA_unif <- plot_ordination(trans, plotbray, shape = "Treatment", color = "Treatment") +
+  geom_point(size = 4, aes(alpha = 0.5)) +
+  geom_encircle(aes(fill = Treatment), s_shape = 1, expand = 0, alpha = 0.2, show.legend = FALSE) +
+  scale_shape_manual(values = c(15, 16, 17, 18, 19)) +
+  theme(aspect.ratio = 1)
+
+PCoA_unif$layers <- PCoA_unif$layers[-1]
+
+PCoA_unif <- PCoA_unif + scale_color_manual(breaks = c("Control", "Protective", "Repetitive", "Single"), 
+                       values = c("black", "blue2", "green4", "red"))
+
+trans.f <- transform_sample_counts(ps.zoox, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+all_core <- prune_taxa(a, trans.f)
+all_core.melt <- psmelt(all_core) %>%
+  group_by(Treatment, OTU, Kingdom, Phylum, Class, Order, Family, Genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+trans <- microbiome::transform(all_core, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+plotbray <- ordinate(trans, method = "PCoA", distance = "unifrac", weighted = TRUE)
+PCoA_core <- plot_ordination(trans, plotbray, shape = "Treatment", color = "Treatment") +
+  geom_point(size = 4, aes(alpha = 0.5)) +
+  geom_encircle(aes(fill = Treatment), s_shape = 1, expand = 0, alpha = 0.2, show.legend = FALSE) +
+  scale_shape_manual(values = c(15, 16, 17, 18, 19)) +
+  theme(aspect.ratio = 1)
+
+PCoA_core$layers <- PCoA_core$layers[-1]
+
+PCoA_core <- PCoA_core + scale_color_manual(breaks = c("Control", "Protective", "Repetitive", "Single"), 
+                       values = c("black", "blue2", "green4", "red"))
+```
+
+# Rarefaction curves
+
+```{r}
+# Zoox Only
+smallest <- min(sample_sums(ps.zoox))
+r <- rarefy_even_depth(ps.zoox, sample.size = smallest, verbose = FALSE, replace = TRUE)
+
+phyloseq.extended:::ggrare(ps.zoox, step = 100, color = "Sample", se = FALSE)
+phyloseq.extended:::ggrare(r, step = 100, color = "Sample", se = FALSE)
+
+# Coral Only
+smallest <- min(sample_sums(ps.aspera))
+r <- rarefy_even_depth(ps.aspera, sample.size = smallest, verbose = FALSE, replace = TRUE)
+
+phyloseq.extended:::ggrare(ps.aspera, step = 100, color = "Sample", se = FALSE) + ylim(0, 200)
+phyloseq.extended:::ggrare(r, step = 100, color = "Sample", se = FALSE) + ylim(0, 200)
+```
+
+## Goods Coverage 
+Compare rarefied and unrarefied to see if sequencing depth was adequate to reliably describe the bacterial microbiome
+### Zoox
+
+```{r}
+library(QsRutils)
+
+# ZOOX
+
+# Extract abundance matrix from the phyloseq object
+OTU1 = as(otu_table(ps.zoox), "matrix")
+# transpose if necessary
+if(taxa_are_rows(ps.zoox)){OTU1 <- t(OTU1)}
+# Coerce to data.frame
+OTUdf = as.data.frame(OTU1)
+
+# samples as rows and OTUs as columns
+goods_result <- goods(OTUdf)
+goods_result
+# output - A table with the headings number of singletons, number of sequences, and Good's coverage for each sample in rows.
+summary(goods_result$goods)
+
+mean(goods_result$goods)
+round(sd(goods_result$goods), 2)
+
+# For Rarefied data ZOOX
+
+smallest <- min(sample_sums(ps.zoox))
+r <- rarefy_even_depth(ps.zoox, sample.size = smallest, verbose = FALSE, replace = TRUE)
+r <- prune_taxa(taxa_sums(r) > 0, r)
+
+# Extract abundance matrix from the phyloseq object
+OTU2 = as(otu_table(r), "matrix")
+# transpose if necessary
+if(taxa_are_rows(r)){OTU2 <- t(OTU2)}
+# Coerce to data.frame
+OTUdf2 = as.data.frame(OTU2)
+
+# samples as rows and OTUs as columns
+goods_result <- goods(OTUdf2)
+goods_result
+# output
+summary(goods_result$goods)
+
+mean(goods_result$goods)
+round(sd(goods_result$goods), 2)
+```
+
+### Coral
+
+```{r}
+# Extract abundance matrix from the phyloseq object
+OTU1 = as(otu_table(ps.aspera), "matrix")
+# transpose if necessary
+if(taxa_are_rows(ps.aspera)){OTU1 <- t(OTU1)}
+# Coerce to data.frame
+OTUdf = as.data.frame(OTU1)
+
+# samples as rows and OTUs as columns
+goods_result <- goods(OTUdf) # a vegan compatible community data matrix
+goods_result
+# output - A table with the headings number of singletons, number of sequences, and Good's coverage for each sample in rows.
+summary(goods_result$goods)
+
+mean(goods_result$goods)
+round(sd(goods_result$goods), 2)
+
+# For Rarefied data coral
+
+smallest <- min(sample_sums(ps.aspera))
+r <- rarefy_even_depth(ps.aspera, sample.size = smallest, verbose = FALSE, replace = TRUE)
+r <- prune_taxa(taxa_sums(r) > 0, r)
+
+# Extract abundance matrix from the phyloseq object
+OTU2 = as(otu_table(r), "matrix")
+# transpose if necessary
+if(taxa_are_rows(r)){OTU2 <- t(OTU2)}
+# Coerce to data.frame
+OTUdf2 = as.data.frame(OTU2)
+
+# samples as rows and OTUs as columns
+goods_result <- goods(OTUdf2)
+goods_result
+# output
+summary(goods_result$goods)
+ 
+mean(goods_result$goods)
+round(sd(goods_result$goods), 2)
+```
+
+# Alpha diversity
+## Zoox
+
+```{r}
+# library(ggplot2)
+smallest <- min(sample_sums(ps.zoox))
+r <- rarefy_even_depth(ps.zoox, sample.size = smallest, verbose = FALSE, replace = TRUE)
+
+ps.pruned <- prune_taxa(taxa_sums(r) > 0, r)
+
+plot_richness(ps.pruned, x = "Treatment", measures=c("Observed", "Chao1", "Shannon")) +
+  geom_boxplot(outlier.size = 0.2) +
+  theme(aspect.ratio = 2, 
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()
+        ) +
+  ylab("Alpha diversity (n = 6)") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
+
+### Stats
+
+```{r}
+library(car)
+library(rstatix)
+
+# Stats for Observed
+results.obs = estimate_richness(ps.pruned, measures = 'Observed')
+
+results.obs <- results.obs %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- data.frame(SampleID = sample_data(ps.pruned)$SampleID, 
+                   Treatment = sample_data(ps.pruned)$Treatment)
+
+results.obs <- left_join(results.obs, meta)
+
+# Check homogeneity of variances using Levenes
+leveneTest(Observed ~ Treatment, data = results.obs)
+
+res.obs.aov <- aov(Observed ~ Treatment, data = results.obs)
+summary(res.obs.aov)
+
+TukeyHSD(res.obs.aov)
+
+# Check normality using Shapiro-Wilk Normality Test
+aov_residuals <- residuals(object = res.obs.aov)
+shapiro.test(x = aov_residuals)
+
+# SUmmary table for results text
+results.obs <- results.obs %>%
+                    group_by(Treatment) %>% 
+                    get_summary_stats(Observed, type = "common")
+
+# Stats for Chao1
+results.chao = estimate_richness(ps.pruned, measures = 'Chao1')
+
+results.chao <- results.chao %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- data.frame(SampleID = sample_data(ps.pruned)$SampleID, 
+                   Treatment = sample_data(ps.pruned)$Treatment)
+
+results.chao <- left_join(results.chao, meta)
+
+# Check homogeneity of variances using Levenes
+leveneTest(Chao1 ~ Treatment, data = results.chao)
+
+results.chao.aov <- aov(Chao1 ~ Treatment, data = results.chao)
+summary(results.chao.aov)
+
+TukeyHSD(results.chao.aov)
+
+# Check normality using Shapiro-Wilk Normality Test
+aov_residuals <- residuals(object = results.chao.aov)
+shapiro.test(x = aov_residuals)
+
+# Summary table for results text
+results.chao <- results.chao %>%
+                    group_by(Treatment) %>% 
+                    get_summary_stats(Chao1, type = "common")
+
+# Stats for Shannon
+results.shan = estimate_richness(ps.pruned, measures = 'Shannon')
+
+results.shan <- results.shan %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- data.frame(SampleID = sample_data(ps.pruned)$SampleID, 
+                   Treatment = sample_data(ps.pruned)$Treatment)
+
+results.shan <- left_join(results.shan, meta)
+
+# Check homogeneity of variances using Levenes
+leveneTest(Shannon ~ Treatment, data = results.shan) # p = 0.841
+
+results.shan.aov <- aov(Shannon ~ Treatment, data = results.shan)
+summary(results.shan.aov)
+
+TukeyHSD(results.shan.aov)
+
+# Check normality using Shapiro-Wilk Normality Test
+aov_residuals <- residuals(object = results.shan.aov)
+shapiro.test(x = aov_residuals)
+
+# SUmmary table for results text
+results.shan <- results.shan %>%
+                    group_by(Treatment) %>% 
+                    get_summary_stats(Shannon, type = "common")
+
+
+alpha.summary.table <- rbind(results.shan, results.obs, results.chao)
+```
+
+## Coral
+
+```{r}
+# library(ggplot2)
+smallest <- min(sample_sums(ps.aspera)) # get minimum seq depth across all samples
+r <- rarefy_even_depth(ps.aspera, sample.size = smallest, verbose = FALSE, replace = TRUE)
+
+ps.pruned <- prune_taxa(taxa_sums(r) > 0, r)
+
+plot_richness(ps.pruned, x = "Day", measures=c("Observed", "Chao1", "Shannon")) +
+  geom_boxplot(outlier.size = 0.2) +
+  theme(aspect.ratio = 2, 
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()
+        ) +
+  ylab("Alpha diversity (n = 6)") +
+  theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 1))
+```
+
+### Stats
+
+```{r}
+library(car)
+library(rstatix)
+
+# Stats for Observed
+results.obs = estimate_richness(ps.pruned, measures = 'Observed')
+
+results.obs <- results.obs %>%
+  tibble::rownames_to_column(var = "SampleID")
+results.obs$SampleID <- str_replace(results.obs$SampleID, "X", "")
+
+meta <- data.frame(SampleID = sample_data(ps.pruned)$SampleID, 
+                   Day = sample_data(ps.pruned)$Day)
+
+results.obs <- left_join(results.obs, meta)
+
+# Check homogeneity of variances using Levenes
+leveneTest(Observed ~ Day, data = results.obs) 
+
+res.obs.aov <- aov(Observed ~ Day, data = results.obs)
+summary(res.obs.aov)
+
+TukeyHSD(res.obs.aov)
+
+# Check normality using Shapiro-Wilk Normality Test (or Kolmogorov-Smirnov test)
+aov_residuals <- residuals(object = res.obs.aov)
+shapiro.test(x = aov_residuals)
+
+# SUmmary table for results text
+results.obs <- results.obs %>%
+                    group_by(Day) %>% 
+                    get_summary_stats(Observed, type = "common")
+
+# Stats for Chao1
+results.chao = estimate_richness(ps.pruned, measures = 'Chao1')
+
+results.chao <- results.chao %>%
+  tibble::rownames_to_column(var = "SampleID")
+results.chao$SampleID <- str_replace(results.chao$SampleID, "X", "")
+
+meta <- data.frame(SampleID = sample_data(ps.pruned)$SampleID, 
+                   Day = sample_data(ps.pruned)$Day)
+
+results.chao <- left_join(results.chao, meta)
+
+# Check homogeneity of variances using Levenes
+leveneTest(Chao1 ~ Day, data = results.chao)
+
+results.chao.aov <- aov(Chao1 ~ Day, data = results.chao)
+summary(results.chao.aov)
+
+TukeyHSD(results.chao.aov)
+
+# Check normality using Shapiro-Wilk Normality Test
+aov_residuals <- residuals(object = results.chao.aov)
+shapiro.test(x = aov_residuals)
+
+# NOT NORMAL - so use non-parametric equivalent Kruskal
+kruskal.test(Chao1 ~ Day, data = results.chao)
+
+results.chao <- results.chao %>%
+                    group_by(Day) %>% 
+                    get_summary_stats(Chao1, type = "common")
+
+# Stats for Shannon
+results.shan = estimate_richness(ps.pruned, measures = 'Shannon')
+
+results.shan <- results.shan %>%
+  tibble::rownames_to_column(var = "SampleID")
+
+meta <- data.frame(SampleID = sample_data(ps.pruned)$SampleID, 
+                   Day = sample_data(ps.pruned)$Day)
+
+results.shan <- left_join(results.shan, meta)
+
+# Check homogeneity of variances using Levenes
+leveneTest(Shannon ~ Day, data = results.shan) 
+
+results.shan.aov <- aov(Shannon ~ Day, data = results.shan)
+summary(results.shan.aov)
+      
+TukeyHSD(results.shan.aov)
+
+# Check normality using Shapiro-Wilk Normality Test
+aov_residuals <- residuals(object = results.shan.aov)
+shapiro.test(x = aov_residuals)
+
+# SUmmary table for results text
+results.shan <- results.shan %>%
+                    group_by(Day) %>% 
+                    get_summary_stats(Shannon, type = "common")
+
+alpha.summary.table.aspera <- rbind(results.shan, results.obs, results.chao)
+```
+
+# Beta diversity
+
+### Weighted
+
+```{r echo=TRUE, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+# Tutorial: http://rfunctions.blogspot.com/2019/03/betadisper-and-adonis-homogeneity-of.html
+
+trans.adonis <- microbiome::transform(ps.zoox, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+
+bray <- phyloseq::distance(trans.adonis, method = "wunifrac")
+sampledf <- data.frame(sample_data(trans.adonis))
+adonis(formula = bray ~ Treatment, data = sampledf, permutations = 9999)
+
+beta <- betadisper(bray, sampledf$Treatment)
+boxplot(beta)
+anova(beta)
+
+TukeyHSD(beta)
+beta.HSD <- TukeyHSD(beta)
+plot(beta.HSD)
+
+plot(beta)
+
+permutest(beta, pairwise = TRUE, permutations = 9999)
+```
+
+### Unweighted
+
+```{r echo=TRUE, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+trans.adonis <- microbiome::transform(ps.zoox, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+
+bray <- phyloseq::distance(trans.adonis, method = "unifrac")
+sampledf <- data.frame(sample_data(trans.adonis))
+adonis(formula = bray ~ Treatment, data = sampledf, permutations = 9999)
+
+beta <- betadisper(bray, sampledf$Treatment)
+boxplot(beta)
+anova(beta)
+
+TukeyHSD(beta)
+beta.HSD <- TukeyHSD(beta)
+plot(beta.HSD)
+
+plot(beta)
+
+permutest(beta, pairwise = TRUE, permutations = 9999)
+```
+
+## Coral + Zoox
+
+```{r echo=TRUE, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+
+trans.adonis <- microbiome::transform(ps, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+
+bray <- phyloseq::distance(trans.adonis, method = "wunifrac")
+sampledf <- data.frame(sample_data(trans.adonis))
+adonis(formula = bray ~ Treatment, data = sampledf, permutations = 9999)
+
+beta <- betadisper(bray, sampledf$Treatment)
+plot(beta)
+boxplot(beta)
+anova(beta) 
+
+TukeyHSD(beta)
+beta.HSD <- TukeyHSD(beta)
+plot(beta.HSD)
+
+permutest(beta, pairwise = TRUE, permutations = 9999)
+```
+
+### CORE zoox ADONIS 
+
+```{r echo=TRUE, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+
+ps.core.zoox <- readRDS("ps.core.zoox.rds") # create ps object WITHOUT phy tree, then ran core, saved ps.core.zoox as rds to read in
+
+trans.adonis <- microbiome::transform(ps.core.zoox, transform = "hellinger", target = "OTU", shift = 0, scale = 1)
+
+bray <- phyloseq::distance(trans.adonis, method = "bray")
+sampledf <- data.frame(sample_data(trans.adonis))
+adonis(formula = bray ~ Treatment, data = sampledf, permutations = 9999)
+
+beta <- betadisper(bray, sampledf$Treatment)
+boxplot(beta)
+anova(beta)
+
+TukeyHSD(beta)
+beta.HSD <- TukeyHSD(beta)
+plot(beta.HSD)
+
+plot(beta)
+
+permutest(beta, pairwise = TRUE, permutations = 9999)
+```
+
+# Differential abundance 
+
+Cannot use the transformed dataset for this
+Note: Positive Log2 foldchange values represent higher abundance in left vs right
+
+```{r}
+library("DESeq2")
+library("forcats")
+library("tibble")
+
+ps.fam <- tax_glom(ps.zoox, taxrank = "Family")
+
+resultstax <- as.data.frame(tax_table(ps.fam)@.Data)
+resultstax <- rownames_to_column(resultstax, var = "OTU.ID") 
+
+alpha = 0.05
+treatment.da <- phyloseq_to_deseq2(ps.fam, ~ Treatment)
+treatment.da <- DESeq(treatment.da, test = "Wald", fitType = "parametric")
+
+res1 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Single"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Single")
+
+res2 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Protective")
+
+res3 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Repetitive"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Repetitive")
+
+res4 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Single", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Single vs. Protective")
+
+res5 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Single", "Repetitive"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Single vs. Repetitive")
+
+res6 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Repetitive", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Repetitive vs. Protective")
+
+# To join all results into one table
+results.da.family <- rbind(res1, res2, res3, res4, res5, res6) %>%
+  mutate(Family = fct_reorder(Family, log2FoldChange))
+
+# Plot
+error <- results.da.family$lfcSE
+
+ggplot(results.da.family, aes(x = log2FoldChange, y = Family)) +
+  geom_point(size = 3) +
+  facet_grid(~ test) +
+  theme(aspect.ratio = 16/9) +
+  geom_vline(xintercept = 0)
+```
+
+#### Family level coral + zoox
+
+```{r}
+library("DESeq2")
+library("forcats")
+library("tibble")
+
+ps.fam <- tax_glom(ps.coral.zoox, taxrank = "Family")
+
+resultstax <- as.data.frame(tax_table(ps.fam)@.Data)
+resultstax <- rownames_to_column(resultstax, var = "OTU.ID") 
+
+alpha = 0.05
+treatment.da <- phyloseq_to_deseq2(ps.fam, ~ Experiment)
+treatment.da <- DESeq(treatment.da, test = "Wald", fitType = "parametric")
+
+res1 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Experiment", "Coral", "Zoox"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Coral vs. Zoox")
+
+# To join all results into one table
+results.da.family <- rbind(res1, res2, res3, res4, res5, res6) %>%
+  mutate(Family = fct_reorder(Family, log2FoldChange))
+```
+
+## ASV level
+
+```{r}
+library("DESeq2")
+library("forcats")
+library("tibble")
+
+resultstax <- as.data.frame(tax_table(ps.zoox))
+resultstax <- rownames_to_column(resultstax, var = "OTU.ID") 
+
+alpha = 0.05
+treatment.da <- phyloseq_to_deseq2(ps.zoox, ~ Treatment)
+treatment.da <- DESeq(treatment.da, test = "Wald", fitType = "parametric")
+
+res1 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Single"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Single")
+
+res2 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Protective")
+
+res3 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Control", "Repetitive"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Control vs. Repetitive")
+
+res4 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Single", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Single vs. Protective")
+
+res5 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Single", "Repetitive"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Single vs. Repetitive")
+
+res6 <- results(treatment.da, cooksCutoff = FALSE, contrast = c("Treatment", "Repetitive", "Protective"), tidy = TRUE) %>%
+  filter(padj < alpha) %>%
+  left_join(., resultstax, by = c("row" = "OTU.ID")) %>%
+  mutate(test = "Repetitive vs. Protective")
+
+# To join all results into one table
+results.da.otu <- rbind(res1, res2, res3, res4, res5, res6) %>%
+  mutate(row = fct_reorder(row, log2FoldChange))
+
+# Plot
+library("drlib")
+
+error <- results.da.otu$lfcSE
+
+ggplot(results.da.otu, aes(x = reorder_within(row, -log2FoldChange, test), y = log2FoldChange, colour = Phylum)) +
+  geom_errorbar(aes(ymin = log2FoldChange + lfcSE, 
+       ymax = log2FoldChange - lfcSE), 
+       width = 0.1, 
+       colour = "black") +
+  geom_point(size = 3) +
+  facet_grid(~ test, scales = "free_x") +
+  theme(aspect.ratio = 1) +
+  geom_hline(yintercept = 0) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0.5))
+```
+
+# Core microbiome - ZOOX
+## 100% Core ASV level
+
+```{r}
+trans.f <- transform_sample_counts(ps.zoox, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+all_core <- prune_taxa(a, trans.f) # 24 core
+zoox_core_OTU.melt <- psmelt(all_core) %>%
+  group_by(OTU, Kingdom, Phylum, Class, Order, Family, Genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# Plot
+ggplot(zoox_core_OTU.melt, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = family), position = "stack") + 
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 2))
+```
+
+## Per Treatment
+
+```{r}
+# Control - 49 core ASVs
+Control <- subset_samples(ps.zoox, Treatment == "Control")
+Control.trans <- transform_sample_counts(Control, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Control.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Control.trans, flist)
+Control_core <- prune_taxa(a, Control.trans)
+
+Control_core.melt <- psmelt(Control_core) %>%
+  group_by(OTU, Kingdom, Phylum, Class, Order, Family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# Protective - 47 core ASVs
+Protective <- subset_samples(ps.zoox, Treatment == "Protective")
+Protective.trans <- transform_sample_counts(Protective, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Protective.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Protective.trans, flist)
+Protective_core <- prune_taxa(a, Protective.trans)
+Protective_core.melt <- psmelt(Protective_core) %>%
+  group_by(OTU, Kingdom, Phylum, Class, Order, Family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# Repetitive - 42 core ASVs
+Repetitive <- subset_samples(ps.zoox, Treatment == "Repetitive")
+Repetitive.trans <- transform_sample_counts(Repetitive, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Repetitive.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Repetitive.trans, flist)
+Repetitive_core <- prune_taxa(a, Repetitive.trans)
+
+Repetitive_core.melt <- psmelt(Repetitive_core) %>%
+  group_by(OTU, Kingdom, Phylum, Class, Order, Family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# Single - 54 core ASVs
+Single <- subset_samples(ps.zoox, Treatment == "Single")
+Single.trans <- transform_sample_counts(Single, function(x) x/sum(x)*100)
+
+n <- length(sample_names(Single.trans))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(Single.trans, flist)
+Single_core <- prune_taxa(a, Single.trans)
+
+Single_core.melt <- psmelt(Single_core) %>%
+  group_by(OTU, Kingdom, Phylum, Class, Order, Family, Treatment) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# Combine into one file then write as csv
+zooxcore100_otu <- rbind(Control_core.melt, Protective_core.melt, Repetitive_core.melt, Single_core.melt)
+
+ggplot(zooxcore100_otu, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = Family), position = "stack") + 
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 2))
+```
+
+
+# Core microbiome - ASPERA
+## 100% Core ASV level
+
+```{r}
+trans.f <- transform_sample_counts(ps.aspera, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+all_core <- prune_taxa(a, trans.f) # 2 core ASVs
+aspera_core_OTU.melt <- psmelt(all_core) %>%
+  group_by(OTU, Kingdom, Phylum, Class, Order, Family, Genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+
+# plot
+ggplot(aspera_core_OTU.melt, aes(x = Treatment, y = Average_rel)) +
+    geom_bar(stat = "identity", aes(fill = family), position = "stack") + 
+    theme(aspect.ratio = 1, legend.position = "right") +
+    guides(fill = guide_legend(ncol = 2))
+```
+
+# Core microbiome Coral + Zoox
+
+```{r}
+trans.f <- transform_sample_counts(ps.coral.zoox, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+coralzoox_core <- prune_taxa(a, trans.f)
+coralzoox_core_OTU.melt <- psmelt(coralzoox_core) %>%
+  group_by(OTU, Kingdom, Phylum, Class, Order, Family, Genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+```
+
+## 100% core GENUS
+
+```{r}
+ps.genus <- tax_glom(ps.coral.zoox, taxrank = "Genus")
+
+trans.f <- transform_sample_counts(ps.genus, function(x) x/sum(x)*100)
+
+n <- length(sample_names(trans.f))
+flist <- filterfun(kOverA(n, 0))
+a <- filter_taxa(trans.f, flist)
+all_core_order <- prune_taxa(a, trans.f)
+coralzoox_core_genus.melt <- psmelt(all_core_order) %>%
+  group_by(OTU, Kingdom, Phylum, Class, Order, Family, Genus) %>%
+  summarise(Average_rel = mean(Abundance),
+            SE_rel = sd(Abundance)/sqrt(n()))
+```
+
+# Heatmap
+
+```{r}
+glom <- tax_glom(ps, taxrank = "Order")
+glom <- transform_sample_counts(glom, function(x) x/sum(x)*100)
+
+library(scales)
+order <- c("1.C.380.L1", "1.C.380.L2", "1.C.380.L3", "1.C.380.R1", "1.C.380.R2", "1.C.380.R3", "14.C.380.L1", "14.C.380.L2", "14.C.380.L3", "14.C.380.R1", "14.C.380.R2", "14.C.380.R3", "9.C.380.L1", "9.C.380.L2", "9.C.380.L3", "9.C.380.R1", "9.C.380.R2", "9.C.380.R3", "4.C.380.L1", "4.C.380.L2", "4.C.380.L3", "4.C.380.R1", "4.C.380.R2", "4.C.380.R3", "Zoox.1.27", "Zoox.2.27", "Zoox.3.27", "Zoox.4.27", "Zoox.5.27", "Zoox.6.27", "Zoox.13.27", "Zoox.14.27", "Zoox.15.27", "Zoox.16.27", "Zoox.17.27", "Zoox.18.27", "Zoox.19.27", "Zoox.20.27",  "Zoox.21.27", "Zoox.22.27", "Zoox.23.27", "Zoox.24.27", "Zoox.7.27", "Zoox.8.27", "Zoox.10.27", "Zoox.11.27", "Zoox.12.27", "Zoox.9.27")
+
+TOP <- names(sort(taxa_sums(glom), TRUE)[1:40])
+TOP <- prune_taxa(TOP, glom)
+
+# Choose colours for gradient: https://www.hexcolortool.com/#001b3d
+plot_heatmap(TOP, method = "PCoA", distance = "wunifrac", 
+             sample.order = order, 
+             sample.label = "Treatment", 
+             taxa.label = "Order", 
+             taxa.order = "Phylum", 
+             low = "#ffffff", high = "#001b3d", trans = identity_trans())
+```
