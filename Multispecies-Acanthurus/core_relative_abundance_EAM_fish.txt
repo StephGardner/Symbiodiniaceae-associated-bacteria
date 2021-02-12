@@ -1,0 +1,302 @@
+Shifting	Species	zOTU	Phylum	Class	Order	Family	Genus	Relabun	SE
+Non_shifting	Acanthurus blochii	UNI202	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	uncultured	14.24	8.12
+Non_shifting	Acanthurus blochii	UNI77	Fusobacteria	Fusobacteriia	Fusobacteriales	Fusobacteriaceae	Fusobacterium	12.14	5.29
+Non_shifting	Acanthurus blochii	UNI153	Spirochaetes	Spirochaetia	Brevinematales	Brevinemataceae	Brevinema	5.79	3.27
+Non_shifting	Acanthurus blochii	UNI3089	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Rubripirellula	3.15	1.07
+Non_shifting	Acanthurus blochii	UNI5138	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Blastopirellula	3.01	0.95
+Non_shifting	Acanthurus blochii	UNI4	Bacteroidetes	Bacteroidia	Bacteroidales	Tannerellaceae	Macellibacteroides	2.76	1.53
+Non_shifting	Acanthurus blochii	UNI375	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Loktanella	2.52	0.89
+Non_shifting	Acanthurus blochii	UNI8625	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Rhodopirellula	2.37	0.8
+Non_shifting	Acanthurus blochii	UNI433	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Rubritalea	1.81	0.64
+Non_shifting	Acanthurus blochii	UNI6509	Cyanobacteria	Oxyphotobacteria	Synechococcales	Cyanobiaceae	Cyanobium PCC-6307	1.6	0.51
+Non_shifting	Acanthurus blochii	UNI3036	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	uncultured	1.57	0.58
+Non_shifting	Acanthurus blochii	UNI132	Firmicutes	Clostridia	Clostridiales	Lachnospiraceae	Epulopiscium	1.43	0.69
+Non_shifting	Acanthurus blochii	UNI1365	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Phyllobacterium	1.37	0.43
+Non_shifting	Acanthurus blochii	UNI19760	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Pir4 lineage	1.31	0.35
+Non_shifting	Acanthurus blochii	UNI1063	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	Vibrio	1.13	0.6
+Non_shifting	Acanthurus blochii	UNI1081	Firmicutes	Clostridia	Clostridiales	Peptostreptococcaceae	Romboutsia	1.12	0.56
+Non_shifting	Acanthurus blochii	UNI15245	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Pirellula	0.86	0.27
+Non_shifting	Acanthurus blochii	UNI2991	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Aliiroseovarius	0.85	0.29
+Non_shifting	Acanthurus blochii	UNI4730	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Halioglobus	0.84	0.43
+Non_shifting	Acanthurus blochii	UNI1334	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Roseobacter	0.83	0.31
+Non_shifting	Acanthurus blochii	UNI3390	Proteobacteria	Gammaproteobacteria	Gammaproteobacteria Incertae Sedis	Unknown Family	uncultured	0.78	0.34
+Non_shifting	Acanthurus blochii	UNI994	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudooctadecabacter	0.69	0.24
+Non_shifting	Acanthurus blochii	UNI20236	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	OM60(NOR5) clade	0.65	0.29
+Non_shifting	Acanthurus blochii	UNI125	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Paracoccus	0.61	0.13
+Non_shifting	Acanthurus blochii	UNI4228	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Parahaliea	0.61	0.32
+Non_shifting	Acanthurus blochii	UNI120	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudophaeobacter	0.6	0.15
+Non_shifting	Acanthurus blochii	UNI2753	Bacteroidetes	Bacteroidia	Flavobacteriales	Flavobacteriaceae	Winogradskyella	0.59	0.22
+Non_shifting	Acanthurus blochii	UNI353	Cyanobacteria	Oxyphotobacteria	Synechococcales	Cyanobiaceae	Synechococcus CC9902	0.59	0.06
+Non_shifting	Acanthurus blochii	UNI8856	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	DEV007	uncultured bacterium	0.55	0.19
+Non_shifting	Acanthurus blochii	UNI3769	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Actibacterium	0.52	0.15
+Non_shifting	Acanthurus blochii	UNI3430	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Congregibacter	0.51	0.26
+Non_shifting	Acanthurus blochii	UNI3597	Cyanobacteria	Oxyphotobacteria	Nostocales	Phormidiaceae	Trichodesmium IMS101	0.49	0.22
+Non_shifting	Acanthurus blochii	UNI18070	Actinobacteria	Actinobacteria	Micrococcales	Dermacoccaceae	Dermacoccus	0.46	0.39
+Non_shifting	Acanthurus blochii	UNI22663	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Haloferula	0.43	0.16
+Non_shifting	Acanthurus blochii	UNI3293	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Roseovarius	0.43	0.09
+Non_shifting	Acanthurus blochii	UNI3461	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	uncultured	0.42	0.13
+Non_shifting	Acanthurus blochii	UNI15812	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Roseibacillus	0.39	0.14
+Non_shifting	Acanthurus blochii	UNI6332	Bacteroidetes	Bacteroidia	Flavobacteriales	Flavobacteriaceae	Actibacter	0.39	0.17
+Non_shifting	Acanthurus blochii	UNI3802	Proteobacteria	Gammaproteobacteria	Pseudomonadales	Moraxellaceae	Enhydrobacter	0.38	0.32
+Non_shifting	Acanthurus blochii	UNI984	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Oceanicola	0.36	0.12
+Non_shifting	Acanthurus blochii	UNI11997	Cyanobacteria	Oxyphotobacteria	Nostocales	Microcystaceae	Crocosphaera WH 0003 (UCYN-B)	0.36	0.12
+Non_shifting	Acanthurus blochii	UNI11657	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Bythopirellula	0.35	0.1
+Non_shifting	Acanthurus blochii	UNI1031	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	Photobacterium	0.35	0.11
+Non_shifting	Acanthurus blochii	UNI20131	Proteobacteria	Gammaproteobacteria	Steroidobacterales	Woeseiaceae	Woeseia	0.32	0.13
+Non_shifting	Acanthurus blochii	UNI5145	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Defluviimonas	0.26	0.09
+Non_shifting	Acanthurus blochii	UNI1224	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Sulfitobacter	0.25	0.05
+Non_shifting	Acanthurus blochii	UNI5239	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Roseivivax	0.25	0.07
+Non_shifting	Acanthurus blochii	UNI2094	Cyanobacteria	Oxyphotobacteria	Nostocales	Xenococcaceae	Xenococcus PCC-7305	0.24	0.1
+Non_shifting	Acanthurus blochii	UNI8202	Proteobacteria	Deltaproteobacteria	Myxococcales	Sandaracinaceae	uncultured	0.23	0.11
+Non_shifting	Acanthurus blochii	UNI2489	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Hoeflea	0.23	0.07
+Non_shifting	Acanthurus blochii	UNI81128	Actinobacteria	Acidimicrobiia	Microtrichales	Microtrichaceae	Sva0996 marine group	0.21	0.07
+Non_shifting	Acanthurus blochii	UNI5800	Firmicutes	Bacilli	Bacillales	Bacillaceae	Bacillus	0.2	0.1
+Non_shifting	Acanthurus blochii	UNI17625	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	uncultured	0.16	0.06
+Non_shifting	Acanthurus blochii	UNI21691	Actinobacteria	Acidimicrobiia	Microtrichales	Ilumatobacteraceae	Ilumatobacter	0.15	0.05
+Non_shifting	Acanthurus blochii	UNI15605	Proteobacteria	Alphaproteobacteria	Rhizobiales	Stappiaceae	Labrenzia	0.15	0.05
+Non_shifting	Acanthurus blochii	UNI8060	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Aestuariivita	0.13	0.05
+Non_shifting	Acanthurus blochii	UNI80228	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	DEV007	uncultured Verrucomicrobia bacterium	0.13	0.04
+Non_shifting	Acanthurus blochii	UNI9002	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Marinovum	0.12	0.03
+Non_shifting	Acanthurus blochii	UNI62970	Planctomycetes	Planctomycetacia	Planctomycetales	Gimesiaceae	uncultured	0.12	0.05
+Non_shifting	Acanthurus blochii	UNI2479	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Mesorhizobium	0.11	0.03
+Non_shifting	Acanthurus blochii	UNI169	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Ruegeria	0.11	0.03
+Non_shifting	Acanthurus blochii	UNI9238	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Lutimaribacter	0.1	0.03
+Non_shifting	Acanthurus blochii	UNI11668	Tenericutes	Mollicutes	DMI	uncultured bacterium	Unassigned	0.1	0.05
+Non_shifting	Acanthurus blochii	UNI18036	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudooceanicola	0.1	0.03
+Non_shifting	Acanthurus blochii	UNI1302	Firmicutes	Bacilli	Bacillales	Bacillaceae	Aeribacillus	0.09	0.03
+Non_shifting	Acanthurus blochii	UNI5808	Proteobacteria	Alphaproteobacteria	Parvibaculales	PS1 clade	uncultured bacterium	0.09	0.04
+Non_shifting	Acanthurus blochii	UNI20964	Proteobacteria	Deltaproteobacteria	Desulfobacterales	Desulfobulbaceae	Desulforhopalus	0.09	0.04
+Non_shifting	Acanthurus blochii	UNI45343	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Thalassobius	0.09	0.03
+Non_shifting	Acanthurus blochii	UNI23000	Proteobacteria	Alphaproteobacteria	Rhizobiales	Hyphomicrobiaceae	Filomicrobium	0.08	0.03
+Non_shifting	Acanthurus blochii	UNI39964	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Cohaesibacter	0.07	0.03
+Non_shifting	Acanthurus blochii	UNI59521	Actinobacteria	Acidimicrobiia	Microtrichales	Ilumatobacteraceae	uncultured	0.07	0.02
+Non_shifting	Acanthurus blochii	UNI21281	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Rhodobacter	0.07	0.02
+Non_shifting	Acanthurus blochii	UNI6060	Proteobacteria	Alphaproteobacteria	Sphingomonadales	Sphingomonadaceae	Erythrobacter	0.07	0.02
+Non_shifting	Acanthurus blochii	UNI26816	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Litoreibacter	0.06	0.03
+Non_shifting	Acanthurus blochii	UNI26227	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Tropicibacter	0.06	0.01
+Non_shifting	Acanthurus blochii	UNI30481	Proteobacteria	Alphaproteobacteria	Rhizobiales	Methyloligellaceae	Methyloceanibacter	0.06	0.03
+Non_shifting	Acanthurus blochii	UNI34547	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	DEV007	uncultured Verrucomicrobiales bacterium	0.05	0.02
+Non_shifting	Acanthurus blochii	UNI59099	Proteobacteria	Deltaproteobacteria	NB1-j	uncultured delta proteobacterium	Unassigned	0.05	0.02
+Non_shifting	Acanthurus blochii	UNI24666	Proteobacteria	Alphaproteobacteria	Rhizobiales	Stappiaceae	Pseudovibrio	0.05	0.01
+Non_shifting	Acanthurus blochii	UNI2659	Proteobacteria	Gammaproteobacteria	Alteromonadales	Pseudoalteromonadaceae	Pseudoalteromonas	0.04	0.03
+Non_shifting	Acanthurus blochii	UNI75129	Proteobacteria	Alphaproteobacteria	Rhizobiales	Methyloligellaceae	uncultured	0.04	0.01
+Non_shifting	Acanthurus blochii	UNI20685	Actinobacteria	Acidimicrobiia	Actinomarinales	uncultured	uncultured marine bacterium	0.04	0.01
+Non_shifting	Acanthurus blochii	UNI25127	Proteobacteria	Gammaproteobacteria	uncultured	uncultured gamma proteobacterium	Unassigned	0.04	0.02
+Non_shifting	Acanthurus blochii	UNI28474	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	DEV007	uncultured bacterium GRIST08	0.03	0.01
+Non_shifting	Acanthurus blochii	UNI4305	Firmicutes	Clostridia	Clostridiales	Clostridiaceae 1	Clostridium sensu stricto 1	0.03	0.01
+Non_shifting	Acanthurus blochii	UNI14889	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Shimia	0.03	0.01
+Non_shifting	Acanthurus blochii	UNI20744	Proteobacteria	Gammaproteobacteria	Enterobacteriales	Enterobacteriaceae	Kosakonia	0.02	0.01
+Non_shifting	Acanthurus grammoptilus	UNI202	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	uncultured	8.41	2.27
+Non_shifting	Acanthurus grammoptilus	UNI5138	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Blastopirellula	3.65	0.55
+Non_shifting	Acanthurus grammoptilus	UNI77	Fusobacteria	Fusobacteriia	Fusobacteriales	Fusobacteriaceae	Fusobacterium	3.64	1.57
+Non_shifting	Acanthurus grammoptilus	UNI6509	Cyanobacteria	Oxyphotobacteria	Synechococcales	Cyanobiaceae	Cyanobium PCC-6307	3.29	1.51
+Non_shifting	Acanthurus grammoptilus	UNI353	Cyanobacteria	Oxyphotobacteria	Synechococcales	Cyanobiaceae	Synechococcus CC9902	3.07	0.51
+Non_shifting	Acanthurus grammoptilus	UNI132	Firmicutes	Clostridia	Clostridiales	Lachnospiraceae	Epulopiscium	2.49	0.67
+Non_shifting	Acanthurus grammoptilus	UNI153	Spirochaetes	Spirochaetia	Brevinematales	Brevinemataceae	Brevinema	2.44	0.51
+Non_shifting	Acanthurus grammoptilus	UNI3089	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Rubripirellula	2.3	0.39
+Non_shifting	Acanthurus grammoptilus	UNI433	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Rubritalea	2.22	0.38
+Non_shifting	Acanthurus grammoptilus	UNI19760	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Pir4 lineage	1.9	0.3
+Non_shifting	Acanthurus grammoptilus	UNI375	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Loktanella	1.9	0.33
+Non_shifting	Acanthurus grammoptilus	UNI8625	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Rhodopirellula	1.88	0.29
+Non_shifting	Acanthurus grammoptilus	UNI125	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Paracoccus	1.77	0.26
+Non_shifting	Acanthurus grammoptilus	UNI1365	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Phyllobacterium	1.56	0.24
+Non_shifting	Acanthurus grammoptilus	UNI120	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudophaeobacter	1.48	0.2
+Non_shifting	Acanthurus grammoptilus	UNI1224	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Sulfitobacter	1.33	0.2
+Non_shifting	Acanthurus grammoptilus	UNI3461	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	uncultured	0.97	0.13
+Non_shifting	Acanthurus grammoptilus	UNI1302	Firmicutes	Bacilli	Bacillales	Bacillaceae	Aeribacillus	0.93	0.33
+Non_shifting	Acanthurus grammoptilus	UNI3036	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	uncultured	0.83	0.12
+Non_shifting	Acanthurus grammoptilus	UNI4730	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Halioglobus	0.82	0.17
+Non_shifting	Acanthurus grammoptilus	UNI994	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudooctadecabacter	0.73	0.12
+Non_shifting	Acanthurus grammoptilus	UNI5800	Firmicutes	Bacilli	Bacillales	Bacillaceae	Bacillus	0.67	0.17
+Non_shifting	Acanthurus grammoptilus	UNI15245	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Pirellula	0.55	0.1
+Non_shifting	Acanthurus grammoptilus	UNI11657	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Bythopirellula	0.53	0.1
+Non_shifting	Acanthurus grammoptilus	UNI20236	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	OM60(NOR5) clade	0.48	0.12
+Non_shifting	Acanthurus grammoptilus	UNI1031	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	Photobacterium	0.47	0.09
+Non_shifting	Acanthurus grammoptilus	UNI1081	Firmicutes	Clostridia	Clostridiales	Peptostreptococcaceae	Romboutsia	0.44	0.19
+Non_shifting	Acanthurus grammoptilus	UNI3390	Proteobacteria	Gammaproteobacteria	Gammaproteobacteria Incertae Sedis	Unknown Family	uncultured	0.35	0.07
+Non_shifting	Acanthurus grammoptilus	UNI169	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Ruegeria	0.29	0.05
+Non_shifting	Acanthurus grammoptilus	UNI3430	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Congregibacter	0.28	0.06
+Non_shifting	Acanthurus grammoptilus	UNI2479	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Mesorhizobium	0.24	0.04
+Non_shifting	Acanthurus grammoptilus	UNI7319	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiales Incertae Sedis	Anderseniella	0.22	0.04
+Non_shifting	Acanthurus grammoptilus	UNI7693	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	uncultured	0.14	0.04
+Non_shifting	Acanthurus grammoptilus	UNI4305	Firmicutes	Clostridia	Clostridiales	Clostridiaceae 1	Clostridium sensu stricto 1	0.06	0.01
+Non_shifting	Acanthurus nigricans	UNI699	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	Ruminococcaceae UCG-014	11.16	3.67
+Non_shifting	Acanthurus nigricans	UNI1661	Spirochaetes	Spirochaetia	Spirochaetales	Spirochaetaceae	Treponema 2	8.7	1.81
+Non_shifting	Acanthurus nigricans	UNI7176	Firmicutes	Clostridia	Clostridiales	Lachnospiraceae	Lachnoclostridium	6.48	1.26
+Non_shifting	Acanthurus nigricans	UNI1451	Firmicutes	Clostridia	Clostridiales	Lachnospiraceae	Cellulosilyticum	6.03	1.18
+Non_shifting	Acanthurus nigricans	UNI2904	Firmicutes	Clostridia	Clostridiales	Christensenellaceae	Christensenellaceae R-7 group	5.77	1.55
+Non_shifting	Acanthurus nigricans	UNI2538	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	Faecalibacterium	4.79	0.78
+Non_shifting	Acanthurus nigricans	UNI4062	Bacteroidetes	Bacteroidia	Bacteroidales	Rikenellaceae	Alistipes	4.78	0.81
+Non_shifting	Acanthurus nigricans	UNI4305	Firmicutes	Clostridia	Clostridiales	Clostridiaceae 1	Clostridium sensu stricto 1	4.77	1.07
+Non_shifting	Acanthurus nigricans	UNI4	Bacteroidetes	Bacteroidia	Bacteroidales	Tannerellaceae	Macellibacteroides	3.01	1.18
+Non_shifting	Acanthurus nigricans	UNI5573	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	[Eubacterium] coprostanoligenes group	2.94	0.99
+Non_shifting	Acanthurus nigricans	UNI4392	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Akkermansiaceae	Akkermansia	2.9	0.68
+Non_shifting	Acanthurus nigricans	UNI4958	Firmicutes	Clostridia	Clostridiales	Peptococcaceae	uncultured	2.44	0.44
+Non_shifting	Acanthurus nigricans	UNI10321	Bacteroidetes	Bacteroidia	Bacteroidales	Tannerellaceae	Parabacteroides	2.33	0.47
+Non_shifting	Acanthurus nigricans	UNI6890	Firmicutes	Erysipelotrichia	Erysipelotrichales	Erysipelotrichaceae	Erysipelatoclostridium	2.03	0.53
+Non_shifting	Acanthurus nigricans	UNI202	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	uncultured	1.92	0.52
+Non_shifting	Acanthurus nigricans	UNI17705	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	GCA-900066225	1.69	0.19
+Non_shifting	Acanthurus nigricans	UNI132	Firmicutes	Clostridia	Clostridiales	Lachnospiraceae	Epulopiscium	1.47	0.3
+Non_shifting	Acanthurus nigricans	UNI18620	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	Oscillibacter	1.27	0.2
+Non_shifting	Acanthurus nigricans	UNI1063	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	Vibrio	1.07	0.4
+Non_shifting	Acanthurus nigricans	UNI11765	Tenericutes	Mollicutes	Mollicutes RF39	uncultured bacterium	Unassigned	1.02	0.27
+Non_shifting	Acanthurus nigricans	UNI7693	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	uncultured	1.01	0.21
+Non_shifting	Acanthurus nigricans	UNI1081	Firmicutes	Clostridia	Clostridiales	Peptostreptococcaceae	Romboutsia	0.75	0.23
+Non_shifting	Acanthurus nigricans	UNI17679	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	Ruminiclostridium 5	0.66	0.13
+Non_shifting	Acanthurus nigricans	UNI77	Fusobacteria	Fusobacteriia	Fusobacteriales	Fusobacteriaceae	Fusobacterium	0.61	0.18
+Non_shifting	Acanthurus nigricans	UNI31602	Firmicutes	Clostridia	Clostridiales	Family XIII	Anaerovorax	0.56	0.24
+Non_shifting	Acanthurus nigricans	UNI19760	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Pir4 lineage	0.55	0.15
+Non_shifting	Acanthurus nigricans	UNI21480	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	Ruminococcaceae UCG-008	0.5	0.17
+Non_shifting	Acanthurus nigricans	UNI433	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Rubritalea	0.47	0.11
+Non_shifting	Acanthurus nigricans	UNI353	Cyanobacteria	Oxyphotobacteria	Synechococcales	Cyanobiaceae	Synechococcus CC9902	0.39	0.11
+Non_shifting	Acanthurus nigricans	UNI33301	Firmicutes	Clostridia	Clostridiales	Lachnospiraceae	Tyzzerella	0.37	0.08
+Non_shifting	Acanthurus nigricans	UNI3461	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	uncultured	0.37	0.1
+Non_shifting	Acanthurus nigricans	UNI5138	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Blastopirellula	0.32	0.07
+Non_shifting	Acanthurus nigricans	UNI26737	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	Pygmaiobacter	0.31	0.07
+Non_shifting	Acanthurus nigricans	UNI85326	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	Ruminiclostridium 9	0.28	0.08
+Non_shifting	Acanthurus nigricans	UNI51682	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	Ruminococcaceae NK4A214 group	0.23	0.07
+Non_shifting	Acanthurus nigricans	UNI125	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Paracoccus	0.19	0.03
+Non_shifting	Acanthurus nigricans	UNI12937	Bacteroidetes	Bacteroidia	Bacteroidales	Rikenellaceae	Rikenella	0.16	0.04
+Non_shifting	Acanthurus nigricans	UNI120	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudophaeobacter	0.14	0.02
+Non_shifting	Acanthurus nigricans	UNI8919	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	UBA1819	0.06	0.01
+Non_shifting	Acanthurus nigricauda	UNI202	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	uncultured	7.51	3.64
+Non_shifting	Acanthurus nigricauda	UNI5138	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Blastopirellula	4.1	0.41
+Non_shifting	Acanthurus nigricauda	UNI132	Firmicutes	Clostridia	Clostridiales	Lachnospiraceae	Epulopiscium	4.04	1.37
+Non_shifting	Acanthurus nigricauda	UNI375	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Loktanella	3.11	0.32
+Non_shifting	Acanthurus nigricauda	UNI3089	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Rubripirellula	3.06	0.29
+Non_shifting	Acanthurus nigricauda	UNI1365	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Phyllobacterium	2.61	0.26
+Non_shifting	Acanthurus nigricauda	UNI433	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Rubritalea	2.52	0.3
+Non_shifting	Acanthurus nigricauda	UNI8625	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Rhodopirellula	2.45	0.2
+Non_shifting	Acanthurus nigricauda	UNI6509	Cyanobacteria	Oxyphotobacteria	Synechococcales	Cyanobiaceae	Cyanobium PCC-6307	2.22	0.6
+Non_shifting	Acanthurus nigricauda	UNI3036	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	uncultured	1.91	0.2
+Non_shifting	Acanthurus nigricauda	UNI2753	Bacteroidetes	Bacteroidia	Flavobacteriales	Flavobacteriaceae	Winogradskyella	1.82	0.27
+Non_shifting	Acanthurus nigricauda	UNI353	Cyanobacteria	Oxyphotobacteria	Synechococcales	Cyanobiaceae	Synechococcus CC9902	1.66	0.29
+Non_shifting	Acanthurus nigricauda	UNI4730	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Halioglobus	1.61	0.21
+Non_shifting	Acanthurus nigricauda	UNI125	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Paracoccus	1.4	0.22
+Non_shifting	Acanthurus nigricauda	UNI120	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudophaeobacter	1.4	0.2
+Non_shifting	Acanthurus nigricauda	UNI1302	Firmicutes	Bacilli	Bacillales	Bacillaceae	Aeribacillus	1.36	0.49
+Non_shifting	Acanthurus nigricauda	UNI19760	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Pir4 lineage	1.32	0.15
+Non_shifting	Acanthurus nigricauda	UNI994	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudooctadecabacter	1.25	0.11
+Non_shifting	Acanthurus nigricauda	UNI4228	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Parahaliea	1.21	0.19
+Non_shifting	Acanthurus nigricauda	UNI3390	Proteobacteria	Gammaproteobacteria	Gammaproteobacteria Incertae Sedis	Unknown Family	uncultured	1.13	0.2
+Non_shifting	Acanthurus nigricauda	UNI1334	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Roseobacter	1.09	0.11
+Non_shifting	Acanthurus nigricauda	UNI20131	Proteobacteria	Gammaproteobacteria	Steroidobacterales	Woeseiaceae	Woeseia	1.09	0.21
+Non_shifting	Acanthurus nigricauda	UNI20236	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	OM60(NOR5) clade	1.07	0.15
+Non_shifting	Acanthurus nigricauda	UNI2094	Cyanobacteria	Oxyphotobacteria	Nostocales	Xenococcaceae	Xenococcus PCC-7305	1.03	0.24
+Non_shifting	Acanthurus nigricauda	UNI11997	Cyanobacteria	Oxyphotobacteria	Nostocales	Microcystaceae	Crocosphaera WH 0003 (UCYN-B)	0.96	0.28
+Non_shifting	Acanthurus nigricauda	UNI3430	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Congregibacter	0.92	0.18
+Non_shifting	Acanthurus nigricauda	UNI1224	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Sulfitobacter	0.92	0.15
+Non_shifting	Acanthurus nigricauda	UNI2991	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Aliiroseovarius	0.89	0.16
+Non_shifting	Acanthurus nigricauda	UNI3461	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	uncultured	0.89	0.1
+Non_shifting	Acanthurus nigricauda	UNI984	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Oceanicola	0.89	0.18
+Non_shifting	Acanthurus nigricauda	UNI5800	Firmicutes	Bacilli	Bacillales	Bacillaceae	Bacillus	0.87	0.19
+Non_shifting	Acanthurus nigricauda	UNI15245	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Pirellula	0.84	0.07
+Non_shifting	Acanthurus nigricauda	UNI3293	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Roseovarius	0.82	0.11
+Non_shifting	Acanthurus nigricauda	UNI7305	Proteobacteria	Gammaproteobacteria	HOC36	uncultured bacterium	Unassigned	0.7	0.17
+Non_shifting	Acanthurus nigricauda	UNI8856	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	DEV007	uncultured bacterium	0.7	0.08
+Non_shifting	Acanthurus nigricauda	UNI8202	Proteobacteria	Deltaproteobacteria	Myxococcales	Sandaracinaceae	uncultured	0.7	0.16
+Non_shifting	Acanthurus nigricauda	UNI3769	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Actibacterium	0.62	0.08
+Non_shifting	Acanthurus nigricauda	UNI22663	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Haloferula	0.56	0.07
+Non_shifting	Acanthurus nigricauda	UNI1081	Firmicutes	Clostridia	Clostridiales	Peptostreptococcaceae	Romboutsia	0.54	0.16
+Non_shifting	Acanthurus nigricauda	UNI6332	Bacteroidetes	Bacteroidia	Flavobacteriales	Flavobacteriaceae	Actibacter	0.52	0.08
+Non_shifting	Acanthurus nigricauda	UNI11657	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Bythopirellula	0.5	0.07
+Non_shifting	Acanthurus nigricauda	UNI5145	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Defluviimonas	0.45	0.05
+Non_shifting	Acanthurus nigricauda	UNI15812	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Roseibacillus	0.39	0.05
+Non_shifting	Acanthurus nigricauda	UNI22136	Actinobacteria	Acidimicrobiia	Actinomarinales	uncultured	uncultured bacterium	0.37	0.08
+Non_shifting	Acanthurus nigricauda	UNI4788	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Pseudohaliea	0.33	0.06
+Non_shifting	Acanthurus nigricauda	UNI10412	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Jannaschia	0.31	0.04
+Non_shifting	Acanthurus nigricauda	UNI2489	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Hoeflea	0.29	0.04
+Non_shifting	Acanthurus nigricauda	UNI81128	Actinobacteria	Acidimicrobiia	Microtrichales	Microtrichaceae	Sva0996 marine group	0.28	0.05
+Non_shifting	Acanthurus nigricauda	UNI17625	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	uncultured	0.27	0.04
+Non_shifting	Acanthurus nigricauda	UNI5808	Proteobacteria	Alphaproteobacteria	Parvibaculales	PS1 clade	uncultured bacterium	0.25	0.04
+Non_shifting	Acanthurus nigricauda	UNI22539	Bacteroidetes	Bacteroidia	Cytophagales	Cyclobacteriaceae	uncultured	0.25	0.05
+Non_shifting	Acanthurus nigricauda	UNI15418	Proteobacteria	Gammaproteobacteria	KI89A clade	uncultured bacterium	Unassigned	0.24	0.05
+Non_shifting	Acanthurus nigricauda	UNI9002	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Marinovum	0.24	0.04
+Non_shifting	Acanthurus nigricauda	UNI169	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Ruegeria	0.23	0.03
+Non_shifting	Acanthurus nigricauda	UNI7319	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiales Incertae Sedis	Anderseniella	0.22	0.03
+Non_shifting	Acanthurus nigricauda	UNI4305	Firmicutes	Clostridia	Clostridiales	Clostridiaceae 1	Clostridium sensu stricto 1	0.22	0.07
+Non_shifting	Acanthurus nigricauda	UNI15605	Proteobacteria	Alphaproteobacteria	Rhizobiales	Stappiaceae	Labrenzia	0.22	0.03
+Non_shifting	Acanthurus nigricauda	UNI65946	Proteobacteria	Gammaproteobacteria	uncultured	uncultured bacterium	Unassigned	0.21	0.03
+Non_shifting	Acanthurus nigricauda	UNI5239	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Roseivivax	0.21	0.03
+Non_shifting	Acanthurus nigricauda	UNI8386	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Tateyamaria	0.21	0.03
+Non_shifting	Acanthurus nigricauda	UNI21691	Actinobacteria	Acidimicrobiia	Microtrichales	Ilumatobacteraceae	Ilumatobacter	0.2	0.02
+Non_shifting	Acanthurus nigricauda	UNI8060	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Aestuariivita	0.2	0.03
+Non_shifting	Acanthurus nigricauda	UNI2479	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Mesorhizobium	0.18	0.02
+Non_shifting	Acanthurus nigricauda	UNI80228	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	DEV007	uncultured Verrucomicrobia bacterium	0.17	0.02
+Non_shifting	Acanthurus nigricauda	UNI23000	Proteobacteria	Alphaproteobacteria	Rhizobiales	Hyphomicrobiaceae	Filomicrobium	0.14	0.02
+Non_shifting	Acanthurus nigricauda	UNI62970	Planctomycetes	Planctomycetacia	Planctomycetales	Gimesiaceae	uncultured	0.13	0.01
+Non_shifting	Acanthurus nigricauda	UNI18036	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudooceanicola	0.12	0.02
+Non_shifting	Acanthurus nigricauda	UNI45343	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Thalassobius	0.11	0.01
+Non_shifting	Acanthurus nigricauda	UNI21281	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Rhodobacter	0.11	0.02
+Non_shifting	Acanthurus nigricauda	UNI59521	Actinobacteria	Acidimicrobiia	Microtrichales	Ilumatobacteraceae	uncultured	0.06	0.01
+Non_shifting	Acanthurus nigricauda	UNI20685	Actinobacteria	Acidimicrobiia	Actinomarinales	uncultured	uncultured marine bacterium	0.05	0.01
+Range_shifting	Acanthurus dussumieri	UNI132	Firmicutes	Clostridia	Clostridiales	Lachnospiraceae	Epulopiscium	24.65	6.52
+Range_shifting	Acanthurus dussumieri	UNI202	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	uncultured	10.71	3.43
+Range_shifting	Acanthurus dussumieri	UNI433	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Rubritalea	3.32	1
+Range_shifting	Acanthurus dussumieri	UNI6509	Cyanobacteria	Oxyphotobacteria	Synechococcales	Cyanobiaceae	Cyanobium PCC-6307	1.31	0.3
+Range_shifting	Acanthurus dussumieri	UNI1302	Firmicutes	Bacilli	Bacillales	Bacillaceae	Aeribacillus	1.07	0.48
+Range_shifting	Acanthurus dussumieri	UNI125	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Paracoccus	0.9	0.3
+Range_shifting	Acanthurus dussumieri	UNI5800	Firmicutes	Bacilli	Bacillales	Bacillaceae	Bacillus	0.75	0.2
+Range_shifting	Acanthurus dussumieri	UNI120	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudophaeobacter	0.72	0.2
+Range_shifting	Acanthurus dussumieri	UNI1365	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Phyllobacterium	0.69	0.2
+Range_shifting	Acanthurus dussumieri	UNI375	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Loktanella	0.68	0.2
+Range_shifting	Acanthurus dussumieri	UNI1224	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Sulfitobacter	0.67	0.19
+Range_shifting	Acanthurus dussumieri	UNI1081	Firmicutes	Clostridia	Clostridiales	Peptostreptococcaceae	Romboutsia	0.65	0.17
+Range_shifting	Acanthurus dussumieri	UNI3036	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	uncultured	0.57	0.13
+Range_shifting	Acanthurus dussumieri	UNI994	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudooctadecabacter	0.34	0.09
+Range_shifting	Acanthurus dussumieri	UNI2991	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Aliiroseovarius	0.15	0.03
+Range_shifting	Acanthurus olivaceus	UNI153	Spirochaetes	Spirochaetia	Brevinematales	Brevinemataceae	Brevinema	8.27	3.34
+Range_shifting	Acanthurus olivaceus	UNI132	Firmicutes	Clostridia	Clostridiales	Lachnospiraceae	Epulopiscium	7.22	2.19
+Range_shifting	Acanthurus olivaceus	UNI1031	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	Photobacterium	4.71	1.64
+Range_shifting	Acanthurus olivaceus	UNI77	Fusobacteria	Fusobacteriia	Fusobacteriales	Fusobacteriaceae	Fusobacterium	4.49	1.49
+Range_shifting	Acanthurus olivaceus	UNI433	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Rubritalea	3.74	0.92
+Range_shifting	Acanthurus olivaceus	UNI5138	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Blastopirellula	3.22	0.53
+Range_shifting	Acanthurus olivaceus	UNI6509	Cyanobacteria	Oxyphotobacteria	Synechococcales	Cyanobiaceae	Cyanobium PCC-6307	2.52	1.43
+Range_shifting	Acanthurus olivaceus	UNI1365	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Phyllobacterium	1.75	0.46
+Range_shifting	Acanthurus olivaceus	UNI3089	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Rubripirellula	1.72	0.31
+Range_shifting	Acanthurus olivaceus	UNI125	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Paracoccus	1.62	0.34
+Range_shifting	Acanthurus olivaceus	UNI375	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Loktanella	1.56	0.32
+Range_shifting	Acanthurus olivaceus	UNI353	Cyanobacteria	Oxyphotobacteria	Synechococcales	Cyanobiaceae	Synechococcus CC9902	1.47	0.3
+Range_shifting	Acanthurus olivaceus	UNI8625	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Rhodopirellula	1.46	0.26
+Range_shifting	Acanthurus olivaceus	UNI120	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudophaeobacter	1.43	0.31
+Range_shifting	Acanthurus olivaceus	UNI1224	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Sulfitobacter	1.23	0.38
+Range_shifting	Acanthurus olivaceus	UNI19760	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Pir4 lineage	1.18	0.23
+Range_shifting	Acanthurus olivaceus	UNI3036	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	uncultured	1	0.22
+Range_shifting	Acanthurus olivaceus	UNI3461	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	uncultured	0.88	0.17
+Range_shifting	Acanthurus olivaceus	UNI994	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Pseudooctadecabacter	0.8	0.2
+Range_shifting	Acanthurus olivaceus	UNI5800	Firmicutes	Bacilli	Bacillales	Bacillaceae	Bacillus	0.79	0.25
+Range_shifting	Acanthurus olivaceus	UNI1302	Firmicutes	Bacilli	Bacillales	Bacillaceae	Aeribacillus	0.71	0.27
+Range_shifting	Acanthurus olivaceus	UNI4730	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Halioglobus	0.68	0.23
+Range_shifting	Acanthurus olivaceus	UNI1334	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Roseobacter	0.61	0.15
+Range_shifting	Acanthurus olivaceus	UNI1063	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	Vibrio	0.57	0.18
+Range_shifting	Acanthurus olivaceus	UNI20236	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	OM60(NOR5) clade	0.53	0.2
+Range_shifting	Acanthurus olivaceus	UNI2753	Bacteroidetes	Bacteroidia	Flavobacteriales	Flavobacteriaceae	Winogradskyella	0.49	0.12
+Range_shifting	Acanthurus olivaceus	UNI3293	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Roseovarius	0.46	0.09
+Range_shifting	Acanthurus olivaceus	UNI11657	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Bythopirellula	0.44	0.1
+Range_shifting	Acanthurus olivaceus	UNI15245	Planctomycetes	Planctomycetacia	Pirellulales	Pirellulaceae	Pirellula	0.41	0.06
+Range_shifting	Acanthurus olivaceus	UNI5145	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Defluviimonas	0.38	0.09
+Range_shifting	Acanthurus olivaceus	UNI22663	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	Rubritaleaceae	Haloferula	0.36	0.08
+Range_shifting	Acanthurus olivaceus	UNI3390	Proteobacteria	Gammaproteobacteria	Gammaproteobacteria Incertae Sedis	Unknown Family	uncultured	0.33	0.07
+Range_shifting	Acanthurus olivaceus	UNI8856	Verrucomicrobia	Verrucomicrobiae	Verrucomicrobiales	DEV007	uncultured bacterium	0.32	0.06
+Range_shifting	Acanthurus olivaceus	UNI2489	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Hoeflea	0.3	0.08
+Range_shifting	Acanthurus olivaceus	UNI17625	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	uncultured	0.27	0.05
+Range_shifting	Acanthurus olivaceus	UNI5808	Proteobacteria	Alphaproteobacteria	Parvibaculales	PS1 clade	uncultured bacterium	0.26	0.06
+Range_shifting	Acanthurus olivaceus	UNI169	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Ruegeria	0.24	0.05
+Range_shifting	Acanthurus olivaceus	UNI3769	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Actibacterium	0.24	0.05
+Range_shifting	Acanthurus olivaceus	UNI3430	Proteobacteria	Gammaproteobacteria	Cellvibrionales	Halieaceae	Congregibacter	0.22	0.05
+Range_shifting	Acanthurus olivaceus	UNI2991	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Aliiroseovarius	0.2	0.03
+Range_shifting	Acanthurus olivaceus	UNI2479	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Mesorhizobium	0.16	0.04
+Range_shifting	Acanthurus olivaceus	UNI7449	Firmicutes	Bacilli	Bacillales	Bacillaceae	Anoxybacillus	0.15	0.07
+Range_shifting	Acanthurus olivaceus	UNI81128	Actinobacteria	Acidimicrobiia	Microtrichales	Microtrichaceae	Sva0996 marine group	0.14	0.03
+Range_shifting	Acanthurus olivaceus	UNI23000	Proteobacteria	Alphaproteobacteria	Rhizobiales	Hyphomicrobiaceae	Filomicrobium	0.14	0.03
+Range_shifting	Acanthurus olivaceus	UNI10412	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Jannaschia	0.13	0.02
+Range_shifting	Acanthurus olivaceus	UNI8386	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Tateyamaria	0.1	0.03
+Range_shifting	Acanthurus triostegus	UNI4	Bacteroidetes	Bacteroidia	Bacteroidales	Tannerellaceae	Macellibacteroides	33.5	5.5
+Range_shifting	Acanthurus triostegus	UNI132	Firmicutes	Clostridia	Clostridiales	Lachnospiraceae	Epulopiscium	19.49	2.93
+Range_shifting	Acanthurus triostegus	UNI153	Spirochaetes	Spirochaetia	Brevinematales	Brevinemataceae	Brevinema	14.76	4.13
+Range_shifting	Acanthurus triostegus	UNI77	Fusobacteria	Fusobacteriia	Fusobacteriales	Fusobacteriaceae	Fusobacterium	8.25	2.16
+Range_shifting	Acanthurus triostegus	UNI1081	Firmicutes	Clostridia	Clostridiales	Peptostreptococcaceae	Romboutsia	4.18	1.6
+Range_shifting	Acanthurus triostegus	UNI850	Epsilonbacteraeota	Campylobacteria	Campylobacterales	Arcobacteraceae	Arcobacter	1.16	0.31
+Range_shifting	Acanthurus triostegus	UNI7693	Firmicutes	Clostridia	Clostridiales	Ruminococcaceae	uncultured	0.86	0.32
+Range_shifting	Acanthurus triostegus	UNI1063	Proteobacteria	Gammaproteobacteria	Vibrionales	Vibrionaceae	Vibrio	0.31	0.08
+Range_shifting	Acanthurus triostegus	UNI5800	Firmicutes	Bacilli	Bacillales	Bacillaceae	Bacillus	0.24	0.08

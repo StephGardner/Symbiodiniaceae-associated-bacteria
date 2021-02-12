@@ -1,0 +1,176 @@
+SampleID	Replicate	Sample_Type	Species	Shifting	GutSection	Site	Location	FishFeeding	keep	CNAnalyse	Mass	Carbon	Nitrogen	CNRatio	AlgaeContentAnalyse	Algae	Detritus	Animalmatter	Other	FishMetaAnalyse	Std_length 	Fork_length	Total_length	Weight	Otolith_weightL	Otolith_weightR	Log_std_length	Log_weight	FultonsK
+X1B_GW	1	Fish	A.blochii	Non_shifting	GW	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	y	40	60	0	0	y	205	239	255	342.7	0.024	0.0246	2.3118	2.5349	0.497
+X2B_GW	1	Fish	A.blochii	Non_shifting	GW	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	y	4.95	95.05	0	0	y	170	205	215	216.6	0.015	0.0144	2.2304	2.3357	0.464
+X5B_GW	2	Fish	A.blochii	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	37.78	58.33	0.56	2.78	y	234	276	308	530.6	0.0293	0.0298	2.3692	2.7248	0.583
+X1B_HG	3	Fish	A.blochii	Non_shifting	HG	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	n	40	60	0	0	y	205	239	255	342.7	0.024	0.0246	2.3118	2.5349	0.497
+X2B_HG	3	Fish	A.blochii	Non_shifting	HG	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	n	4.95	95.05	0	0	y	170	205	215	216.6	0.015	0.0144	2.2304	2.3357	0.464
+X5B_HG	2	Fish	A.blochii	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	37.78	58.33	0.56	2.78	y	234	276	308	530.6	0.0293	0.0298	2.3692	2.7248	0.583
+X10D_GW	4	Fish	A.dussumieri	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	69.12	30.59	0.29	0	y	175	212	230	205.2	0.0233	NA	2.243	2.3122	0.008
+X1D_GW	5	Fish	A.dussumieri	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	NA	NA	NA	NA	y	235	287	310	505.7	0.0418	0.0414	2.3711	2.7039	0.009
+X2D_GW	6	Fish	A.dussumieri	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	47.42	52.58	0	0	y	210	250	275	357.7	0.0307	0.0299	2.3222	2.5535	0.009
+X3D_GW	7	Fish	A.dussumieri	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	34.98	65.02	0	0	y	245	290	305	576.8	0.0451	0.0468	2.3892	2.761	0.009
+X4D_GW	8	Fish	A.dussumieri	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	NA	NA	NA	NA	y	247	280	310	513.8	0.0328	NA	2.3927	2.7108	0.008
+X5D_GW	9	Fish	A.dussumieri	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	37.86	59.22	1.94	0	y	225	265	280	431.7	0.0305	0.0317	2.3522	2.6352	0.008
+X6D_GW	10	Fish	A.dussumieri	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	21.95	0	0	78.05	y	230	270	296	492.9	NA	0.0306	2.3617	2.6928	0.009
+X7D_GW	11	Fish	A.dussumieri	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	NA	NA	NA	NA	y	195	235	260	307.1	NA	NA	2.29	2.4873	0.009
+X8D_GW	12	Fish	A.dussumieri	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	63.37	36.63	0	0	y	215	248	275	392.3	0.0301	0.031	2.3324	2.5936	0.009
+X9D_GW	13	Fish	A.dussumieri	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	51.79	48.21	0	0	y	205	237	255	322.8	0.0222	0.024	2.3118	2.5089	0.008
+X10D_HG	4	Fish	A.dussumieri	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	69.12	30.59	0.29	0	y	175	212	230	205.2	0.0233	NA	2.243	2.3122	0.008
+X1D_HG	5	Fish	A.dussumieri	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	y	235	287	310	505.7	0.0418	0.0414	2.3711	2.7039	0.009
+X2D_HG	6	Fish	A.dussumieri	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	47.42	52.58	0	0	y	210	250	275	357.7	0.0307	0.0299	2.3222	2.5535	0.009
+X3D_HG	7	Fish	A.dussumieri	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	34.98	65.02	0	0	y	245	290	305	576.8	0.0451	0.0468	2.3892	2.761	0.009
+X4D_HG	8	Fish	A.dussumieri	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	y	247	280	310	513.8	0.0328	NA	2.3927	2.7108	0.008
+X5D_HG	9	Fish	A.dussumieri	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	37.86	59.22	1.94	0	y	225	265	280	431.7	0.0305	0.0317	2.3522	2.6352	0.008
+X6D_HG	10	Fish	A.dussumieri	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	21.95	0	0	78.05	y	230	270	296	492.9	NA	0.0306	2.3617	2.6928	0.009
+X7D_HG	11	Fish	A.dussumieri	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	y	195	235	260	307.1	NA	NA	2.29	2.4873	0.009
+X8D_HG	12	Fish	A.dussumieri	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	63.37	36.63	0	0	y	215	248	275	392.3	0.0301	0.031	2.3324	2.5936	0.009
+X9D_HG	13	Fish	A.dussumieri	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	51.79	48.21	0	0	y	205	237	255	322.8	0.0222	0.024	2.3118	2.5089	0.008
+X1G_GW	14	Fish	A.grammoptilus	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	64.37	35.63	0	0	y	198	231	260	320.7	0.0195	0.0197	2.2967	2.5061	0.506
+X2G_GW	15	Fish	A.grammoptilus	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	42.61	57.39	0	0	y	215	247	273	406.8	0.0274	0.0274	2.3324	2.6094	0.54
+X3G_GW	16	Fish	A.grammoptilus	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	NA	NA	NA	NA	y	190	224	259	282.8	0.022	0.0225	2.2788	2.4515	0.486
+X5G_GW	17	Fish	A.grammoptilus	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	59.94	40.06	0	0	y	195	225	252	275.9	NA	0.0199	2.29	2.4408	0.449
+X6G_GW	18	Fish	A.grammoptilus	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	38.8	60.11	0	1.09	y	185	218	230	297.7	NA	NA	2.2672	2.4738	0.541
+X7G_GW	19	Fish	A.grammoptilus	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	52.23	47.77	0	0	y	222	257	292	404.4	0.0275	0.0263	2.3464	2.6068	0.502
+X8G_GW	20	Fish	A.grammoptilus	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	48.19	51.81	0	0	y	210	240	275	346.4	NA	0.0266	2.3222	2.5396	0.483
+X1G_HG	14	Fish	A.grammoptilus	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	64.37	35.63	0	0	y	198	231	260	320.7	0.0195	0.0197	2.2967	2.5061	0.506
+X2G_HG	15	Fish	A.grammoptilus	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	42.61	57.39	0	0	y	215	247	273	406.8	0.0274	0.0274	2.3324	2.6094	0.54
+X3G_HG	16	Fish	A.grammoptilus	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	y	190	224	259	282.8	0.022	0.0225	2.2788	2.4515	0.486
+X4G_HG	21	Fish	A.grammoptilus	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	16.42	83.58	0	0	y	187	220	245	290.8	NA	0.0246	2.2718	2.4636	0.517
+X5G_HG	17	Fish	A.grammoptilus	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	59.94	40.06	0	0	y	195	225	252	275.9	NA	0.0199	2.29	2.4408	0.449
+X6G_HG	18	Fish	A.grammoptilus	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	38.8	60.11	0	1.09	y	185	218	230	297.7	NA	NA	2.2672	2.4738	0.541
+X7G_HG	19	Fish	A.grammoptilus	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	52.23	47.77	0	0	y	222	257	292	404.4	0.0275	0.0263	2.3464	2.6068	0.502
+X8G_HG	20	Fish	A.grammoptilus	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	48.19	51.81	0	0	y	210	240	275	346.4	NA	0.0266	2.3222	2.5396	0.483
+X10NN_GW	22	Fish	A.nigricans	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	96.39	2.41	0	1.2	y	150	180	190	162.8	0.0147	0.0155	2.1761	2.2117	0.017
+X1NN_GW	23	Fish	A.nigricans	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	97.44	2.56	0	0	y	190	214	223	265.4	NA	NA	2.2788	2.4239	0.014
+X2NN_GW	24	Fish	A.nigricans	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	100	0	0	0	y	155	175	177	169.8	0.0284	0.0284	2.1903	2.2299	0.016
+X3NN_GW	25	Fish	A.nigricans	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	99.41	0.59	0	0	y	175	200	205	227.9	0.0351	0.0371	2.243	2.3577	0.015
+X4NN_GW	26	Fish	A.nigricans	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	98.65	1.35	0	0	y	145	165	171	135.3	0.0136	0.0141	2.1614	2.1313	0.015
+X5NN_GW	27	Fish	A.nigricans	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	NA	NA	NA	NA	y	135	155	158	107.5	0.0116	0.0113	2.1303	2.0314	0.015
+X6NN_GW	28	Fish	A.nigricans	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	96.59	3.41	0	0	y	175	205	210	233.1	0.0334	0.019	2.243	2.3675	0.016
+X7NN_GW	29	Fish	A.nigricans	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	92.45	6.92	0	0	y	180	205	210	257.4	0.0313	0.0308	2.2553	2.4106	0.016
+X8NN_GW	30	Fish	A.nigricans	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	92.31	7.69	0	0	y	185	212	217	281.3	0.03	0.0291	2.2672	2.4492	0.016
+X9NN_GW	31	Fish	A.nigricans	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	100	0	0	0	y	170	202	206	222.3	0.0345	0.0342	2.2304	2.3469	0.016
+X10NN_HG	22	Fish	A.nigricans	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	96.39	2.41	0	1.2	y	150	180	190	162.8	0.0147	0.0155	2.1761	2.2117	0.017
+X2NN_HG	24	Fish	A.nigricans	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	100	0	0	0	y	155	175	177	169.8	0.0284	0.0284	2.1903	2.2299	0.016
+X4NN_HG	26	Fish	A.nigricans	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	98.65	1.35	0	0	y	145	165	171	135.3	0.0136	0.0141	2.1614	2.1313	0.015
+X5NN_HG	27	Fish	A.nigricans	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	y	135	155	158	107.5	0.0116	0.0113	2.1303	2.0314	0.015
+X6NN_HG	28	Fish	A.nigricans	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	96.59	3.41	0	0	y	175	205	210	233.1	0.0334	0.019	2.243	2.3675	0.016
+X7NN_HG	29	Fish	A.nigricans	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	92.45	6.92	0	0	y	180	205	210	257.4	0.0313	0.0308	2.2553	2.4106	0.016
+X8NN_HG	30	Fish	A.nigricans	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	92.31	7.69	0	0	y	185	212	217	281.3	0.03	0.0291	2.2672	2.4492	0.016
+X9NN_HG	31	Fish	A.nigricans	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	100	0	0	0	y	170	202	206	222.3	0.0345	0.0342	2.2304	2.3469	0.016
+X1NU_GW	32	Fish	A.nigricauda	Non_shifting	GW	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	y	3.76	95.49	0	0.75	y	185	220	260	297.8	0.0251	0.0255	2.2672	2.4739	1.136
+X2NU_GW	33	Fish	A.nigricauda	Non_shifting	GW	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	y	1.3	98.45	0.26	0	y	175	205	240	236.9	0.0234	0.0246	2.243	2.3746	1.007
+X3NU_GW	34	Fish	A.nigricauda	Non_shifting	GW	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	y	1.94	97.78	0	0.28	y	187	210	253	291.9	0.0242	0.0242	2.2718	2.4652	1.09
+X4NU_GW	35	Fish	A.nigricauda	Non_shifting	GW	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	y	4.17	95.83	0	0	y	200	229	270	351.2	0.0223	0.0217	2.301	2.5456	1.15
+X5NU_GW	36	Fish	A.nigricauda	Non_shifting	GW	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	y	7.41	92.59	0	0	y	210	240	310	453.7	0.0291	NA	2.3222	2.6568	1.351
+X10NU_GW	37	Fish	A.nigricauda	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	36.32	63.68	0	0	y	245	275	340	478.4	0.0404	0.0399	2.3892	2.6798	1.055
+X11NU_GW	38	Fish	A.nigricauda	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	6.73	93.27	0	0	y	227	262	335	430.6	0.0636	0.06	2.356	2.6341	1.102
+X6NU_GW	39	Fish	A.nigricauda	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	11.36	77.27	0.45	10.91	y	245	275	336	487.9	0.074	0.0725	2.3892	2.6883	1.076
+X7NU_GW	40	Fish	A.nigricauda	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	3.7	96.3	0	0	y	205	237	298	345.5	0.0253	0.0255	2.3118	2.5384	1.079
+X8NU_GW	41	Fish	A.nigricauda	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	19.21	80.79	0	0	y	230	265	355	431.4	0.0508	0.0504	2.3617	2.6349	1.076
+X9NU_GW	42	Fish	A.nigricauda	Non_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	34.33	65.67	0	0	y	200	227	270	NA	0.0281	0.0272	2.301	NA	NA
+X1NU_HG	32	Fish	A.nigricauda	Non_shifting	HG	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	n	3.76	95.49	0	0.75	y	185	220	260	297.8	0.0251	0.0255	2.2672	2.4739	1.136
+X2NU_HG	33	Fish	A.nigricauda	Non_shifting	HG	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	n	1.3	98.45	0.26	0	y	175	205	240	236.9	0.0234	0.0246	2.243	2.3746	1.007
+X3NU_HG	34	Fish	A.nigricauda	Non_shifting	HG	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	n	1.94	97.78	0	0.28	y	187	210	253	291.9	0.0242	0.0242	2.2718	2.4652	1.09
+X4NU_HG	35	Fish	A.nigricauda	Non_shifting	HG	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	n	4.17	95.83	0	0	y	200	229	270	351.2	0.0223	0.0217	2.301	2.5456	1.15
+X5NU_HG	36	Fish	A.nigricauda	Non_shifting	HG	Lagoon_entrance_west	Lagoon	NA	yes	n	NA	NA	NA	NA	n	7.41	92.59	0	0	y	210	240	310	453.7	0.0291	NA	2.3222	2.6568	1.351
+X10NU_HG	37	Fish	A.nigricauda	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	36.32	63.68	0	0	y	245	275	340	478.4	0.0404	0.0399	2.3892	2.6798	1.055
+X11NU_HG	38	Fish	A.nigricauda	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	6.73	93.27	0	0	y	227	262	335	430.6	0.0636	0.06	2.356	2.6341	1.102
+X6NU_HG	39	Fish	A.nigricauda	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	11.36	77.27	0.45	10.91	y	245	275	336	487.9	0.074	0.0725	2.3892	2.6883	1.076
+X7NU_HG	40	Fish	A.nigricauda	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	3.7	96.3	0	0	y	205	237	298	345.5	0.0253	0.0255	2.3118	2.5384	1.079
+X8NU_HG	41	Fish	A.nigricauda	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	19.21	80.79	0	0	y	230	265	355	431.4	0.0508	0.0504	2.3617	2.6349	1.076
+X9NU_HG	42	Fish	A.nigricauda	Non_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	34.33	65.67	0	0	y	200	227	270	NA	0.0281	0.0272	2.301	NA	NA
+X7O_GW	43	Fish	A.olivaceus	Range_shifting	GW	Keyhole	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	13.59	85.33	0	0	y	182	205	240	213.7	0.0126	0.0122	2.2601	2.3298	0.017
+X8O_GW	44	Fish	A.olivaceus	Range_shifting	GW	Keyhole	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	38.78	60.71	0.51	0	y	170	195	210	164.9	NA	0.0113	2.2304	2.2172	0.016
+X9O_GW	45	Fish	A.olivaceus	Range_shifting	GW	Keyhole	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	21.92	78.08	0	0	y	175	200	225	172.9	0.0119	0.0119	2.243	2.2378	0.015
+X10O_GW	46	Fish	A.olivaceus	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	29.36	63.4	0	7.23	y	226	255	318	381.2	NA	NA	2.3541	2.5812	0.017
+X11O_GW	47	Fish	A.olivaceus	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	20.73	73.98	5.28	0	y	210	244	270	331.1	0.0273	0.0264	2.3222	2.52	0.018
+X1O_GW	48	Fish	A.olivaceus	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	74.06	25.94	0	0	y	220	260	325	390	0.025	NA	2.3424	2.5911	0.018
+X2O_GW	49	Fish	A.olivaceus	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	46.03	52.38	0.79	0.79	y	220	250	320	394.9	0.0204	0.0207	2.3424	2.5965	0.019
+X3O_GW	50	Fish	A.olivaceus	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	40.71	57.86	1.43	0	y	220	260	330	380.7	NA	NA	2.3424	2.5806	0.018
+X4O_GW	51	Fish	A.olivaceus	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	16.03	69.47	0	12.21	y	250	285	358	402.3	0.0375	0.0376	2.3979	2.6046	0.013
+X5O_GW	52	Fish	A.olivaceus	Range_shifting	GW	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	y	53.27	46.23	0	0	y	240	278	350	427.5	0.0205	0.0208	2.3802	2.6309	0.016
+X7O_HG	43	Fish	A.olivaceus	Range_shifting	HG	Keyhole	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	13.59	85.33	0	0	y	182	205	240	213.7	0.0126	0.0122	2.2601	2.3298	0.017
+X8O_HG	44	Fish	A.olivaceus	Range_shifting	HG	Keyhole	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	38.78	60.71	0.51	0	y	170	195	210	164.9	NA	0.0113	2.2304	2.2172	0.016
+X9O_HG	45	Fish	A.olivaceus	Range_shifting	HG	Keyhole	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	21.92	78.08	0	0	y	175	200	225	172.9	0.0119	0.0119	2.243	2.2378	0.015
+X10O_HG	46	Fish	A.olivaceus	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	29.36	63.4	0	7.23	y	226	255	318	381.2	NA	NA	2.3541	2.5812	0.017
+X11O_HG	47	Fish	A.olivaceus	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	20.73	73.98	5.28	0	y	210	244	270	331.1	0.0273	0.0264	2.3222	2.52	0.018
+X1O_HG	48	Fish	A.olivaceus	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	74.06	25.94	0	0	y	220	260	325	390	0.025	NA	2.3424	2.5911	0.018
+X2O_HG	49	Fish	A.olivaceus	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	46.03	52.38	0.79	0.79	y	220	250	320	394.9	0.0204	0.0207	2.3424	2.5965	0.019
+X3O_HG	50	Fish	A.olivaceus	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	40.71	57.86	1.43	0	y	220	260	330	380.7	NA	NA	2.3424	2.5806	0.018
+X4O_HG	51	Fish	A.olivaceus	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	16.03	69.47	0	12.21	y	250	285	358	402.3	0.0375	0.0376	2.3979	2.6046	0.013
+X5O_HG	52	Fish	A.olivaceus	Range_shifting	HG	South_Algae_Flats	Outer_reef	NA	yes	n	NA	NA	NA	NA	n	53.27	46.23	0	0	y	240	278	350	427.5	0.0205	0.0208	2.3802	2.6309	0.016
+X10T_GW	53	Fish	A.triostegus	Range_shifting	GW	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	92.36	0	0	7.64	y	130	154	155	103.2	NA	0.0065	2.1139	2.0137	0.034
+X11T_GW	54	Fish	A.triostegus	Range_shifting	GW	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	88.57	0	0	11.43	y	130	150	254	101.2	NA	NA	2.1139	2.0052	0.033
+X1T_GW	55	Fish	A.triostegus	Range_shifting	GW	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	99.38	0	0	0.62	y	142	165	166	121.3	0.0079	0.0085	2.1523	2.0839	0.032
+X2T_GW	56	Fish	A.triostegus	Range_shifting	GW	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	97.83	0	0	2.17	y	167	190	193	192.3	0.0115	0.0113	2.2227	2.284	0.033
+X3T_GW	57	Fish	A.triostegus	Range_shifting	GW	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	100	0	0	0	y	188	219	220	270.4	0.02	0.0189	2.2742	2.432	0.034
+X4T_GW	58	Fish	A.triostegus	Range_shifting	GW	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	87.88	0	0	12.12	y	141	163	165	113.5	0.0068	0.0059	2.1492	2.055	0.03
+X6T_GW	60	Fish	A.triostegus	Range_shifting	GW	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	100	0	0	0	y	150	183	185	176.2	0.0112	0.0099	2.1761	2.246	0.04
+X7T_GW	61	Fish	A.triostegus	Range_shifting	GW	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	77	1	2	20	y	162	185	187	161.8	0.0099	0.0098	2.2095	2.209	0.03
+X8T_GW	62	Fish	A.triostegus	Range_shifting	GW	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	83.53	0	0	16.47	y	177	204	206	225.4	0.0135	0.0135	2.248	2.353	0.033
+X9T_GW	63	Fish	A.triostegus	Range_shifting	GW	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	64.08	0.97	5.83	29.13	y	157	190	195	167.5	0.0118	0.00124	2.1959	2.224	0.034
+X11T_HG	54	Fish	A.triostegus	Range_shifting	HG	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	n	88.57	0	0	11.43	y	130	150	254	101.2	NA	NA	2.1139	2.0052	0.033
+X1T_HG	55	Fish	A.triostegus	Range_shifting	HG	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	n	99.38	0	0	0.62	y	142	165	166	121.3	0.0079	0.0085	2.1523	2.0839	0.032
+X2T_HG	56	Fish	A.triostegus	Range_shifting	HG	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	n	97.83	0	0	2.17	y	167	190	193	192.3	0.0115	0.0113	2.2227	2.284	0.033
+X3T_HG	57	Fish	A.triostegus	Range_shifting	HG	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	n	100	0	0	0	y	188	219	220	270.4	0.02	0.0189	2.2742	2.432	0.034
+X4T_HG	58	Fish	A.triostegus	Range_shifting	HG	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	n	87.88	0	0	12.12	y	141	163	165	113.5	0.0068	0.0059	2.1492	2.055	0.03
+X5T_HG	59	Fish	A.triostegus	Range_shifting	HG	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	y	89.57	0	0	10.43	y	144	170	173	140.9	NA	0.011	2.1584	2.1489	0.035
+X6T_HG	60	Fish	A.triostegus	Range_shifting	HG	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	n	100	0	0	0	y	150	183	185	176.2	0.0112	0.0099	2.1761	2.246	0.04
+X7T_HG	61	Fish	A.triostegus	Range_shifting	HG	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	n	77	1	2	20	y	162	185	187	161.8	0.0099	0.0098	2.2095	2.209	0.03
+X8T_HG	62	Fish	A.triostegus	Range_shifting	HG	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	n	83.53	0	0	16.47	y	177	204	206	225.4	0.0135	0.0135	2.248	2.353	0.033
+X9T_HG	63	Fish	A.triostegus	Range_shifting	HG	Lagoon_entrance_east	Lagoon	NA	yes	n	NA	NA	NA	NA	n	64.08	0.97	5.83	29.13	y	157	190	195	167.5	0.0118	0.00124	2.1959	2.224	0.034
+X11EAM		EAM	EAM		EAM	South_Algae_Flats	Outer_reef	Nigricans	yes	n	0	0	0	0	y	79.17	20.83	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X12EAM		EAM	EAM		EAM	South_Algae_Flats	Outer_reef	Nigricans	yes	y	0.0203	12.23	0.72	17.03579886	y	54.73	45.27	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X13EAM		EAM	EAM		EAM	South_Algae_Flats	Outer_reef	Nigricans	yes	y	0.0431	14.11	0.53	26.73867728	y	71.63	28.37	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X14EAM		EAM	EAM		EAM	South_Algae_Flats	Outer_reef		yes	y	0.0879	13.54	0.36	38.08720113	y	0	0	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X15EAM		NA	NA		NA	NA	NA	NA	no	n	0	0	0	0	y	0	0	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X16EAM		NA	NA		NA	NA	NA	NA	no	n	0	0	0	0	y	0	0	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X17EAM		EAM	EAM		EAM	Lagoon_entrance_east	Lagoon	Triostegus	yes	y	0.0251	13.39	0.82	16.33325201	y	93.43	6.57	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X18EAM		EAM	EAM		EAM	Lagoon_entrance_east	Lagoon	Triostegus	yes	y	0.2111	11.12	0.12	95.12403764	y	31.98	68.02	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X19EAM		EAM	EAM		EAM	Lagoon_entrance_east	Lagoon	Triostegus	yes	y	0.0117	13.06	1.45	9.025570145	y	80.18	18.92	0.9	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X20EAM		EAM	EAM		EAM	Lagoon_entrance_east	Lagoon	Triostegus	yes	y	0.0681	12.34	0.28	43.72785259	y	78.41	21.59	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X21EAM		EAM	EAM		EAM	Lagoon_entrance_east	Lagoon	Triostegus	yes	n	0	0	0	0	y	99.04	0.96	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X22EAM		EAM	EAM		EAM	Lagoon_entrance_east	Lagoon	Triostegus	yes	y	0.1983	11.33	0.19	60.42666667	y	41.18	58.82	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X23EAM		NA	NA		NA	NA	NA	NA	no	n	0	0	0	0	y	0	0	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X24EAM		EAM	EAM		EAM	Lagoon_entrance_west	Lagoon	Nigricauda	yes	y	0.0713	12.34	0.33	36.86883777	y	85.21	14.79	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X25EAM		EAM	EAM		EAM	Lagoon_entrance_west	Lagoon	Nigricauda	yes	y	0.0184	11.42	0.87	13.11889719	y	8.75	47.5	1.25	42.5	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X26EAM		EAM	EAM		EAM	Lagoon_entrance_west	Lagoon	Nigricauda	yes	y	0.0767	12.26	0.21	58.5202864	y	10.23	12.5	0	77.27	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X27EAM		EAM	EAM		EAM	Lagoon_entrance_west	Lagoon	Nigricauda	yes	y	0.5088	8.06	0.1	81.02512563	y	14.57	85.43	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X28EAM		NA	NA		NA	NA	NA	NA	no	y	0.206	6.82	0.13	50.51890289	y	0	0	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X29EAM		EAM	EAM		EAM	Lagoon_entrance_west	Lagoon	Nigricauda	yes	y	0.1352	12.13	0.16	74.50859951	y	35.33	64.67	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X30EAM		EAM	EAM		EAM	Lagoon_entrance_west	Lagoon	Nigricauda	yes	y	0.0618	12.22	0.31	39.80456026	y	76.21	23.79	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X31EAM		EAM	EAM		EAM	Lagoon_entrance_west	Lagoon	Nigricauda	yes	y	0.0503	11.93	0.32	36.93498452	y	19.7	77.27	3.03	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X32EAM		EAM	EAM		EAM	Lagoon_entrance_west	Lagoon	Nigricauda	yes	y	0.227	11.49	0.16	72.08281054	y	30.22	69.33	0.44	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X33EAM		EAM	EAM		EAM	Keyhole	Outer_reef	Dussumieri_Olivaceus	yes	y	0.5134	7.08	0.09	77.35519126	y	86.11	0	13.89	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X34EAM		EAM	EAM		EAM	Keyhole	Outer_reef		yes	y	0.3048	5.13	0.11	47.82851817	y	0	0	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X35EAM		EAM	EAM		EAM	Keyhole	Outer_reef	Dussumieri_Olivaceus	yes	y	0.0572	12.02	0.29	41.27747253	y	34.22	63.1	2.67	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X36EAM		EAM	EAM		EAM	Keyhole	Outer_reef	Dussumieri_Olivaceus	yes	y	0.0808	12.32	0.28	44.31654676	y	54.48	44.83	0.69	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X37EAM		EAM	EAM		EAM	Keyhole	Outer_reef	Dussumieri_Olivaceus	yes	y	0.3286	9.68	0.11	90.06511628	y	23.68	75.26	1.05	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X38EAM		EAM	EAM		EAM	Keyhole	Outer_reef	Dussumieri_Olivaceus	yes	y	0.1071	12.47	0.24	52.74957699	y	52.27	46.02	1.7	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X39EAM		EAM	EAM		EAM	Keyhole	Outer_reef	Dussumieri_Olivaceus	yes	y	0.3425	10.24	0.11	96.33113829	y	41.5	58.5	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X4EAM		EAM	EAM		EAM	South_Algae_Flats	Outer_reef	Nigricans	yes	y	0.0126	15.37	1.78	8.65915493	y	79.15	19.54	1.3	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X40EAM		EAM	EAM		EAM	Keyhole	Outer_reef	Dussumieri_Olivaceus	yes	y	0.1085	12.07	0.17	71.42011834	y	11.19	88.81	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X41EAM		EAM	EAM		EAM	Keyhole	Outer_reef	Dussumieri_Olivaceus	yes	y	0.5146	8.36	0.09	98.12206573	y	53.88	45.21	0.46	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X42EAM		EAM	EAM		EAM	Keyhole	Outer_reef	Dussumieri_Olivaceus	yes	y	0.4596	8.63	0.09	93.59002169	y	33.65	65.88	0.47	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X43EAM		EAM	EAM		EAM	Outer_Algae_Flats	Outer_reef	Olivaceus_Grammoptilus	yes	y	0.0819	12.08	0.21	58.1048581	y	25.83	72.5	0.83	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X44EAM		EAM	EAM		EAM	Outer_Algae_Flats	Outer_reef	Olivaceus_Grammoptilus	yes	y	0.1777	12.01	0.17	71.61598092	y	34.87	65.13	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X45EAM		EAM	EAM		EAM	Outer_Algae_Flats	Outer_reef	Olivaceus_Grammoptilus	yes	y	0.2306	12.22	0.23	54.21472937	y	68.57	31.43	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X46EAM		EAM	EAM		EAM	Outer_Algae_Flats	Outer_reef	Olivaceus_Grammoptilus	yes	y	0.1961	11.98	0.16	76.79487179	y	51.41	48.59	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X47EAM		EAM	EAM		EAM	Outer_Algae_Flats	Outer_reef	Olivaceus_Grammoptilus	yes	y	0.1539	12.4	0.25	49.18683062	y	45.59	54.41	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X48EAM		EAM	EAM		EAM	Outer_Algae_Flats	Outer_reef	Olivaceus_Grammoptilus	yes	y	0.1306	12.19	0.2	59.93117011	y	48.98	48.3	2.72	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X49EAM		EAM	EAM		EAM	Outer_Algae_Flats	Outer_reef	Olivaceus_Grammoptilus	yes	y	0.0523	13.71	0.55	24.82796088	y	83.33	16.67	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X5EAM		EAM	EAM		EAM	South_Algae_Flats	Outer_reef	Nigricans	yes	y	0.1287	12.82	0.27	47.74674115	y	53.85	46.15	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X50EAM		NA	NA		NA	NA	NA	NA	no	n	0	0	0	0	y	0	0	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X51EAM		EAM	EAM		EAM	Outer_Algae_Flats	Outer_reef	Olivaceus_Grammoptilus	yes	y	0.1934	12.45	0.3	42.04660588	y	66.67	31.03	2.3	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X52EAM		EAM	EAM		EAM	Outer_Algae_Flats	Outer_reef	Olivaceus_Grammoptilus	yes	y	0.1164	12.61	0.22	56.62325999	y	46.81	45.21	2.66	5.32	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X6EAM		NA	NA		NA	NA	NA	NA	no	n	0	0	0	0	y	0	0	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X7EAM		EAM	EAM		EAM	South_Algae_Flats	Outer_reef	Nigricans	yes	y	0.0087	13.55	1.71	7.910099241	y	70.07	29.93	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X8EAM		EAM	EAM		EAM	South_Algae_Flats	Outer_reef	Nigricans	yes	n	0	0	0	0	y	72.73	27.27	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+X9EAM		NA	NA		NA	NA	NA	NA	no	n	0	0	0	0	y	0	0	0	0	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+W1_1		Water	Water		Water	Water	Water	Water	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+W1_2		Water	Water		Water	Water	Water	Water	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+W2		Water	Water		Water	Water	Water	Water	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+W3		Water	Water		Water	Water	Water	Water	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+W4		Water	Water		Water	Water	Water	Water	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
+W5		Water	Water		Water	Water	Water	Water	yes	n	NA	NA	NA	NA	n	NA	NA	NA	NA	n	NA	NA	NA	NA	NA	NA	NA	NA	NA
